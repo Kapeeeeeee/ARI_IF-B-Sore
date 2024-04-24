@@ -1,111 +1,144 @@
+import 'package:intl/intl.dart';
+import 'package:kerkom/pembayaran.dart';
 import 'package:flutter/material.dart';
+import 'package:kerkom/pembayaran_lanjutan.dart';
+import 'package:provider/provider.dart';
+import 'package:kerkom/provider.dart';
 
-class Cart extends StatefulWidget {
+class Keranjang extends StatefulWidget {
   @override
-  State<Cart> createState() => _CartState();
+  _KeranjangState createState() => _KeranjangState();
 }
 
-class _CartState extends State<Cart> {
+class _KeranjangState extends State<Keranjang> {
+  Map<String, bool> _selectedStores = {};
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Pembayaran'),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.all(8),
-            child: Column( // Menggunakan Column sebagai parent
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    ),
+    final cartProvider = Provider.of<CartProvider>(context);
+    final List<CartItem> items = cartProvider.items;
+
+    Map<String, int> jumlahItemPerToko = {};
+
+    for (var item in items) {
+      jumlahItemPerToko[item.namatoko] =
+          (jumlahItemPerToko[item.namatoko] ?? 0) + item.itemCount;
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Keranjang'),
+      ),
+      body: items.isEmpty
+          ? Center(
+              child: Text(
+                'Keranjang Kosong',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            )
+          : ListView.builder(
+              itemCount: jumlahItemPerToko.length,
+              itemBuilder: (context, index) {
+                final toko = jumlahItemPerToko.keys.elementAt(index);
+                final jumlahItem = jumlahItemPerToko[toko];
+                final produkToko =
+                    items.where((item) => item.namatoko == toko).toList();
+
+                return ExpansionTile(
+                  leading: Checkbox(
+                    value: _selectedStores[toko] ?? false,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedStores[toko] = value!;
+                        for (var item in produkToko) {
+                          cartProvider.toggleItemSelection(item);
+                        }
+                      });
+                    },
                   ),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 5),
-                      Image.network(
-                        "https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2023/06/16/CHAT-GPT-1903337166.jpg",
-                        width: 120,
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                  title: Text(toko),
+                  subtitle: Text('Jumlah Item: $jumlahItem'),
+                  children: [
+                    for (var item in produkToko)
+                      ListTile(
+                        leading: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                              image: NetworkImage(item.gambar),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        title: Text(item.itemName),
+                        subtitle: Row(
                           children: [
-                            SizedBox(height: 20),
                             Text(
-                              "RM Enak Banget LOHH",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              NumberFormat.currency(
+                                locale: 'id_ID',
+                                symbol: 'Rp. ',
+                                decimalDigits: 0,
+                              ).format(item.harga)),
+                            Text(" Jumlah : ${item.itemCount}")
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                cartProvider.kurangiItem(item.itemName, 1);
+                              },
                             ),
-                            SizedBox(height: 5),
-                            Expanded(
-                              child: Text(
-                                'Jl. M.H Thamrin No.140, Pusat Ps., Kec. Medan Kota, Kota Medan, Sumatera Utara 20212',
-                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                              ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                cartProvider.tambahItem(
+                                  item.gambar,
+                                  item.itemName,
+                                  item.harga,
+                                  1,
+                                  item.namatoko,
+                                );
+                              },
                             ),
-                            Row(
-                              children: [
-                                Icon(Icons.star, color: Colors.yellow,),
-                                Text("4.3(1547)"),
-                                SizedBox(width: 10),
-                                Text(
-                                  "\$99.0",
-                                  style: TextStyle(
-                                    color: Colors.greenAccent,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                cartProvider.hapusItem(
+                                    item); // Panggil fungsi hapusItem dari provider
+                              },
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  "Field Baru",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Masukkan Kode Promo ",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                SizedBox(height: 20,),
-                Container(
-                  child: Text("test"),
-                )
-              ],
+                  ],
+                );
+              },
             ),
-          ),
-        ),
-      ),
+            floatingActionButton: FloatingActionButton(
+   onPressed: () {
+    List<CartItem> selectedItems = [];
+    
+    for (var item in items) {
+      if (_selectedStores.containsKey(item.namatoko) && _selectedStores[item.namatoko]!) {
+        selectedItems.add(item);
+        cartProvider.toggleItemSelection(item);
+      }
+    }
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bayar(selectedItems: selectedItems)));
+  },
+  child: Icon(Icons.checklist),
+),
+
+
     );
   }
 }

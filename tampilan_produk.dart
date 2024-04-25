@@ -1,216 +1,298 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:kerkom/cart.dart';
 import 'package:flutter/material.dart';
-import 'package:kerkom/detail.dart';
-import 'package:flutter/widgets.dart';
-import 'package:kerkom/provider.dart';
+import 'package:intl/intl.dart';
+import 'package:tugas_kelompok_semester4/project/cart.dart';
+import 'package:tugas_kelompok_semester4/project/commentpage.dart';
+import 'package:tugas_kelompok_semester4/project/detail.dart';
 import 'package:provider/provider.dart';
+import 'package:tugas_kelompok_semester4/project/provider.dart';
 
-class Makanan extends StatefulWidget {
+class Makanan extends StatelessWidget {
   final Detail g;
-  final int itemCount; // Tambahkan properti itemCount
-  const Makanan(
-      {Key? key,
-      required this.g,
-      required this.itemCount}); // Sertakan properti itemCount dalam konstruktor
+  final int itemCount;
 
-  @override
-  State<Makanan> createState() => _MakananState();
-}
-
-class _MakananState extends State<Makanan> {
-  late int itemCount; // Deklarasikan itemCount di dalam kelas State
-
-  @override
-  void initState() {
-    super.initState();
-    itemCount = widget.itemCount; // Inisialisasi itemCount dari properti widget
-  }
+  const Makanan({Key? key, required this.g, required this.itemCount})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.g.judul}'),
+        title: Text('${g.judul}'),
       ),
-      body: Container(
+      body: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
-              tag: widget.g.fileName,
+              tag: g.fileName,
               child: Container(
-                height: MediaQuery.of(context).size.height / 2,
+                height: 300, // Tentukan tinggi sesuai kebutuhan Anda
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage("${widget.g.fileName}"),
-                      fit: BoxFit.cover),
+                    image: NetworkImage(g.fileName),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Flexible(
-              child: Text(
-                widget.g.judul,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: 10),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
-                    Provider.of<CartProvider>(context, listen: false)
-                        .kurangiItem(widget.g.judul, widget.g.itemCount);
-                  },
-                ),
-                Consumer<CartProvider>(
-                  builder: (context, cartProvider, _) => Text(
-                    cartProvider.getItemCount(widget.g.judul).toString(),
+                Expanded(
+                  child: Text(
+                    g.judul,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Provider.of<CartProvider>(context, listen: false)
-                        .tambahItem(
-                            widget.g.fileName,
-                            widget.g.judul,
-                            widget.g.harga,
-                            widget.g.itemCount,
-                            widget.g.namatoko);
-                  },
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => CommentPage()),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.star,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    Text(
+                      g.rating.toString(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        NumberFormat.currency(
+                          locale: 'id_ID',
+                          symbol: '',
+                          decimalDigits: 0,
+                        ).format(int.parse(g.harga.toString())),
+                        style: TextStyle(
+                        fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ],
                 ),
               ],
             ),
             SizedBox(height: 10),
-            Flexible(
-              child: Text(
-                widget.g.desc,
-                style: TextStyle(fontSize: 15),
-              ),
-            ),
-          ],
-        ),
-      ),
-       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Keranjang()));
-        },
-        child: Icon(Icons.shopping_cart), // Add your desired icon here
-      ),
-    );
-  }
-}
-
-class Minuman extends StatefulWidget {
-  final Detail minum;
-  final int itemCount; // Tambahkan properti itemCount
-  const Minuman(
-      {Key? key,
-      required this.minum,
-      required this.itemCount}); // Sertakan properti itemCount dalam konstruktor
-
-  @override
-  State<Minuman> createState() => _MinumanState();
-}
-
-class _MinumanState extends State<Minuman> {
-  late int itemCount; // Deklarasikan itemCount di dalam kelas State
-
-  @override
-  void initState() {
-    super.initState();
-    itemCount = widget.itemCount; // Inisialisasi itemCount dari properti widget
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.minum.judul}'),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hero(
-              tag: widget.minum.fileName,
-              child: Container(
-                height: MediaQuery.of(context).size.height / 2,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage("${widget.minum.fileName}"),
-                      fit: BoxFit.cover),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Flexible(
-              child: Text(
-                widget.minum.judul,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 10),
             Row(
               children: [
-                IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
-                    Provider.of<CartProvider>(context, listen: false)
-                        .kurangiItem(
-                            widget.minum.judul, widget.minum.itemCount);
-                  },
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[700],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.remove, color: Colors.white),
+                    onPressed: () {
+                      Provider.of<AccountProvider>(context, listen: false)
+                          .kurangiItem(g.judul, itemCount);
+                    },
+                  ),
                 ),
-                Consumer<CartProvider>(
+                SizedBox(width: 10),
+                Consumer<AccountProvider>(
                   builder: (context, cartProvider, _) => Text(
-                    cartProvider.getItemCount(widget.minum.judul).toString(),
+                    cartProvider.getItemCount(g.judul).toString(),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Provider.of<CartProvider>(context, listen: false)
-                        .tambahItem(
-                            widget.minum.fileName,
-                            widget.minum.judul,
-                            widget.minum.harga,
-                            widget.minum.itemCount,
-                            widget.minum.namatoko);
-                  },
+                SizedBox(width: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[700],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.add, color: Colors.white),
+                    onPressed: () {
+                      Provider.of<AccountProvider>(context, listen: false)
+                          .tambahItem(
+                        g.fileName,
+                        g.judul,
+                        g.harga,
+                        g.itemCount,
+                        g.namatoko,
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
             SizedBox(height: 10),
-            Flexible(
-              child: Text(
-                widget.minum.desc,
-                style: TextStyle(fontSize: 15),
-              ),
+            Text(
+              g.desc,
+              style: TextStyle(fontSize: 15),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Keranjang()));
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => Keranjang()),
+          );
         },
-        child: Icon(Icons.shopping_cart), // Add your desired icon here
+        child: Icon(Icons.shopping_cart),
+      ),
+    );
+  }
+}
+
+class Minuman extends StatelessWidget {
+  final Detail minum;
+  final int itemCount;
+
+  const Minuman({Key? key, required this.minum, required this.itemCount})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${minum.judul}'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Hero(
+              tag: minum.fileName,
+              child: Container(
+                height: 300, // Tentukan tinggi sesuai kebutuhan Anda
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(minum.fileName),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  minum.judul,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => CommentPage()),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.star,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    Text(
+                      minum.rating.toString(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        NumberFormat.currency(
+                          locale: 'id_ID',
+                          symbol: '',
+                          decimalDigits: 0,
+                        ).format(int.parse(minum.harga.toString())),
+                        style: TextStyle(
+                        fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[700],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.remove, color: Colors.white),
+                    onPressed: () {
+                      Provider.of<AccountProvider>(context, listen: false)
+                          .kurangiItem(minum.judul, itemCount);
+                    },
+                  ),
+                ),
+                SizedBox(width: 10),
+                Consumer<AccountProvider>(
+                  builder: (context, cartProvider, _) => Text(
+                    cartProvider.getItemCount(minum.judul).toString(),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[700],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.add, color: Colors.white),
+                    onPressed: () {
+                      Provider.of<AccountProvider>(context, listen: false)
+                          .tambahItem(
+                        minum.fileName,
+                        minum.judul,
+                        minum.harga,
+                        minum.itemCount,
+                        minum.namatoko,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(
+              minum.desc,
+              style: TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => Keranjang()),
+          );
+        },
+        child: Icon(Icons.shopping_cart),
       ),
     );
   }

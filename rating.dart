@@ -1,223 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'reviewData.dart';
+import 'package:provider/provider.dart';
+import 'package:tugas_kelompok_semester4/project/commentpage.dart';
+import 'package:tugas_kelompok_semester4/project/detail.dart';
+import 'package:tugas_kelompok_semester4/project/provider.dart';
 
-class ShareDialog extends StatelessWidget {
-  final String judul;
+class Rating extends StatefulWidget {
+  final List<CartItem>? selectedItems;
 
-  ShareDialog({required this.judul});
+  Rating({this.selectedItems});
+
+  @override
+  State<Rating> createState() => _RatingState();
+}
+
+class _RatingState extends State<Rating> {
+  double _rating = 0;
+  List<String> _selectedChips = [];
+  List<String> _chipMenu = [];
+  TextEditingController _commentController = TextEditingController();
+  var gambar = '';
+  var nama = '';
+  var toko = '';
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+    final commentData = Provider.of<CommentData>(context);
+    final List<CartItem>? selectedItems = widget.selectedItems;
+
+    if (selectedItems != null) {
+      for (var item in selectedItems) {
+        gambar = item.gambar;
+        nama = item.itemName;
+        toko = item.namatoko;
+      }
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Beri Penilaian untuk $nama"),
       ),
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
+              SizedBox(height: 20),
+              Image.network(
+                gambar,
+                width: 150,
+                height: 150,
               ),
-              Text(
-                "SHARE IT TO YOUR FRIENDS!",
-                style: TextStyle(
-                  color: Colors.orange,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                judul,
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 16.0),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    child: IconButton(
-                      icon: Image.network(''),
-                      onPressed: () {
-                        // Handle Facebook share
-                      },
-                    ),
+              SizedBox(height: 20),
+              Center(
+                child: Text(
+                  toko,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Container(
-                    width: 60,
-                    height: 60,
-                    child: IconButton(
-                      icon: Image.network(""),
-                      onPressed: () {
-                        // Handle Instagram share
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: 60,
-                    height: 60,
-                    child: IconButton(
-                      icon: Image.network(""),
-                      onPressed: () {
-                        // Handle Twitter share
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.0),
-              Text(
-                "Leave a Review",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 20),
               Center(
                 child: RatingBar.builder(
-                  initialRating: 0,
+                  initialRating: _rating,
+                  minRating: 1,
                   itemCount: 5,
                   itemBuilder: (context, index) {
                     return Icon(
                       Icons.star,
-                      color: Colors.orange,
+                      color: Colors.amber,
                     );
                   },
                   onRatingUpdate: (rating) {
-                    // Handle rating update
+                    setState(() {
+                      _rating = rating;
+                      _updateChipMenu();
+                    });
                   },
                 ),
               ),
-              SizedBox(height: 16.0),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Icon(Icons.person),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                hintText: "Type your comment here",
-                                hintStyle: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.grey),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.message),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Icon(Icons.message),
-                  ),
-                ],
-              ),
-              Text(
-                "COMMENTS",
-                style: TextStyle(
-                    color: Colors.orange, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: SingleChildScrollView(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: reviewList.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(reviewList[index].image),
-                              ),
-                              SizedBox(width: 8.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.star,
-                                          color: Colors.orange, size: 16.0),
-                                      SizedBox(width: 4.0),
-                                      Text(
-                                        reviewList[index].rating.toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4.0),
-                                  Text(
-                                    reviewList[index].name,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 4.0),
-                                  Text(
-                                    reviewList[index].date,
-                                    style: TextStyle(
-                                        fontSize: 12.0, color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4.0),
-                          Text(
-                            reviewList[index].comment,
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.grey,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                          Divider(),
-                        ],
+              SizedBox(height: 20),
+              _rating == 0 ? Container() : _displayChipMenu(),
+              SizedBox(height: 20),
+              TextField(
+                controller: _commentController,
+                decoration: InputDecoration(
+                  hintText: "Write your comment here...",
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () {
+                      _addComment(commentData);
+                      _commentController.clear();
+                      _selectedChips.clear();
+                      _rating = 0;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CommentPage(),
+                        ),
                       );
                     },
                   ),
@@ -229,4 +112,71 @@ class ShareDialog extends StatelessWidget {
       ),
     );
   }
+
+  void _updateChipMenu() {
+    _chipMenu.clear();
+    _selectedChips.clear();
+    if (_rating == 5) {
+      _chipMenu.addAll(
+        ['Excellent', 'Delicious', 'Outstanding', 'Fantastic', 'Superb'],
+      );
+    } else if (_rating == 4) {
+      _chipMenu.addAll(['Good', 'Tasty', 'Satisfactory', 'Nice', 'Great']);
+    } else if (_rating == 3) {
+      _chipMenu.addAll(['Average', 'Fair', 'Decent', 'Okay', 'Not Bad']);
+    } else if (_rating == 2) {
+      _chipMenu.addAll([
+        'Needs Improvement',
+        'Poor',
+        'Unsatisfactory',
+        'Disappointing',
+        'Below Average',
+      ]);
+    } else if (_rating == 1) {
+      _chipMenu.addAll(['Bad', 'Terrible', 'Awful', 'Worst', 'Horrible']);
+    }
+  }
+
+  Widget _displayChipMenu() {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.center,
+      children: _chipMenu.map((chipText) {
+        return FilterChip(
+          selectedColor: Colors.yellow,
+          label: Text(chipText),
+          selected: _selectedChips.contains(chipText),
+          onSelected: (isSelected) {
+            setState(() {
+              if (isSelected) {
+                _selectedChips.add(chipText);
+              } else {
+                _selectedChips.remove(chipText);
+              }
+            });
+          },
+        );
+      }).toList(),
+    );
+  }
+  void _addComment(CommentData commentData) {
+  Account currentUser = Provider.of<AccountProvider>(context,listen: false).currentAccount;
+  String commentText = _commentController.text;
+  if (commentText.isNotEmpty && currentUser != null) { // Periksa currentUser tidak null
+    Map<String, dynamic> newComment = {
+      'avatar': currentUser.foto,
+      'name': currentUser.namauser,
+      'rating': _rating,
+      'chips': List.from(_selectedChips),
+      'comment': commentText,
+    };
+    commentData.addComment(newComment);
+  } else {
+    // Handle jika currentUser null atau commentText kosong
+  }
+}
+
+
+
 }

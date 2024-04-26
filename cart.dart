@@ -1,23 +1,28 @@
-import 'package:intl/intl.dart';
-import 'package:kerkom/pembayaran.dart';
+
+import 'package:tugas_kelompok_semester4/project/detail.dart';
+import 'package:tugas_kelompok_semester4/project/pembayaran.dart';
 import 'package:flutter/material.dart';
-import 'package:kerkom/pembayaran_lanjutan.dart';
 import 'package:provider/provider.dart';
-import 'package:kerkom/provider.dart';
+import 'package:tugas_kelompok_semester4/project/provider.dart';
+
 
 class Keranjang extends StatefulWidget {
   @override
   _KeranjangState createState() => _KeranjangState();
 }
 
+
 class _KeranjangState extends State<Keranjang> {
   Map<String, bool> _selectedStores = {};
+  bool terisi  = false ;
+  List<CartItem> selectedItems = [];
 
+  
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
-    final List<CartItem> items = cartProvider.items;
-
+    Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
+    final cartProvider = Provider.of<AccountProvider>(context);
+    final List<CartItem> items = currentUser.cart;
     Map<String, int> jumlahItemPerToko = {};
 
     for (var item in items) {
@@ -50,8 +55,11 @@ class _KeranjangState extends State<Keranjang> {
                     onChanged: (value) {
                       setState(() {
                         _selectedStores[toko] = value!;
+                        terisi = false;
                         for (var item in produkToko) {
                           cartProvider.toggleItemSelection(item);
+                          if (value == true){ 
+                            terisi = true ;}
                         }
                       });
                     },
@@ -73,17 +81,8 @@ class _KeranjangState extends State<Keranjang> {
                           ),
                         ),
                         title: Text(item.itemName),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              NumberFormat.currency(
-                                locale: 'id_ID',
-                                symbol: 'Rp. ',
-                                decimalDigits: 0,
-                              ).format(item.harga)),
-                            Text(" Jumlah : ${item.itemCount}")
-                          ],
-                        ),
+                        subtitle: Text(
+                            'Harga: ${item.harga}, Jumlah: ${item.itemCount}'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -122,21 +121,25 @@ class _KeranjangState extends State<Keranjang> {
                 );
               },
             ),
-            floatingActionButton: FloatingActionButton(
-   onPressed: () {
-    List<CartItem> selectedItems = [];
-    
-    for (var item in items) {
-      if (_selectedStores.containsKey(item.namatoko) && _selectedStores[item.namatoko]!) {
-        selectedItems.add(item);
-        cartProvider.toggleItemSelection(item);
-      }
-    }
+  
+  
+   floatingActionButton: _selectedStores.containsValue(true)
+    ? FloatingActionButton(
+        onPressed: () {
+          for (var item in items) {
+            if (_selectedStores.containsKey(item.namatoko) &&
+                _selectedStores[item.namatoko]!) {
+              selectedItems.add(item);
+              cartProvider.toggleItemSelection(item);
+            }
+          }
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Pembayaran(selectedItems: selectedItems)));
+        },
+        child: Icon(Icons.checklist),
+      )
+    : null,
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bayar(selectedItems: selectedItems)));
-  },
-  child: Icon(Icons.checklist),
-),
 
 
     );

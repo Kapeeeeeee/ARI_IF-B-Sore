@@ -1,13 +1,17 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, sort_child_properties_last, prefer_const_literals_to_create_immutables
 import 'package:intl/intl.dart';
-import 'package:kerkom/autoscroll.dart';
-import 'package:kerkom/cart.dart';
-import 'package:kerkom/profile.dart';
-import 'package:kerkom/search.dart';
+import 'package:provider/provider.dart';
+import 'package:tugas_kelompok_semester4/project/autoscroll.dart';
+import 'package:tugas_kelompok_semester4/project/cart.dart';
+import 'package:tugas_kelompok_semester4/project/profile.dart';
+import 'package:tugas_kelompok_semester4/project/provider.dart';
+import 'package:tugas_kelompok_semester4/project/search.dart';
+import 'package:tugas_kelompok_semester4/project/settings.dart';
+import 'package:tugas_kelompok_semester4/project/wallet.dart';
 import 'package:flutter/material.dart';
-import 'package:kerkom/detail.dart';
+import 'package:tugas_kelompok_semester4/project/detail.dart';
 
-import 'package:kerkom/tampilan_produk.dart';
+import 'package:tugas_kelompok_semester4/project/tampilan_produk.dart';
 import 'package:flutter/widgets.dart';
 
 final List<String> ls = [
@@ -46,8 +50,8 @@ final List<String> harga = [
   m9.harga.toString(),
   m10.harga.toString()
 ];
-final List itemCount= [
-   m1.itemCount,
+final List itemCount = [
+  m1.itemCount,
   m2.itemCount,
   m3.itemCount,
   m4.itemCount,
@@ -59,7 +63,9 @@ final List itemCount= [
   m10.itemCount
 ];
 
-final List ls1 = [ m1,
+final List ls1 = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10];
+final List semua = [
+  m1,
   m2,
   m3,
   m4,
@@ -68,8 +74,18 @@ final List ls1 = [ m1,
   m7,
   m8,
   m9,
-  m10];
-
+  m10,
+  mn1,
+  mn2,
+  mn3,
+  mn4,
+  mn5,
+  mn6,
+  mn7,
+  mn8,
+  mn9,
+  mn10
+];
 final List<String> mn = [
   mn1.fileName,
   mn2.fileName,
@@ -106,7 +122,7 @@ final List<String> hargamn = [
   mn9.harga.toString(),
   mn10.harga.toString()
 ];
-final List itemCountmn= [
+final List itemCountmn = [
   mn1.itemCount,
   mn2.itemCount,
   mn3.itemCount,
@@ -119,16 +135,7 @@ final List itemCountmn= [
   mn10.itemCount
 ];
 
-final List lsmn = [ mn1,
-  mn2,
-  mn3,
-  mn4,
-  mn5,
-  mn6,
-  mn7,
-  mn8,
-  mn9,
-  mn10];
+final List lsmn = [mn1, mn2, mn3, mn4, mn5, mn6, mn7, mn8, mn9, mn10];
 
 class AppColors {
   static const Color color1 = Color(0xFF222831);
@@ -147,10 +154,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: Text("Hallo ${p1.namauser}"),
+        title: Text("Hallo ${currentUser.namauser}"),
         actions: <Widget>[
           IconButton(
               onPressed: () {
@@ -161,14 +168,20 @@ class _HomeState extends State<Home> {
           IconButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Profile(p: p1),
+                builder: (context) => Profile(),
               ));
             },
             icon: CircleAvatar(
-              backgroundImage: NetworkImage("${p1.foto}"),
+              backgroundImage: NetworkImage("${currentUser.foto}"),
               radius: 25, // Sesuaikan dengan kebutuhan Anda
             ),
           ),
+          IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Settings()));
+              },
+              icon: Icon(Icons.settings))
         ],
       ),
       body: SingleChildScrollView(
@@ -180,40 +193,41 @@ class _HomeState extends State<Home> {
               Row(
                 children: [
                   Flexible(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 0),
-                      width: 80,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: AppColors.color1,
-                        borderRadius: BorderRadius.circular(
-                            10), // Atur radius sesuai keinginan Anda
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Wallet",
-                            style: TextStyle(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Wallet()));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 0),
+                        width: 80,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              10), // Atur radius sesuai keinginan Anda
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Wallet",
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          Text(
-                            NumberFormat.currency(
-                              locale: 'id_ID',
-                              symbol: '',
-                              decimalDigits: 0,
-                            ).format(p1.uang),
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
+                              ),
+                            ),
+                            Text(
+                              "${currentUser.uang}",
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
             ]),
-            Text("${p1.namauser}"),
-            Text("Hallo ${p1.namauser} Apa yang kamu mau pesan hari ini"),
+            Text("${currentUser.namauser}"),
+            Text(
+                "Hallo ${currentUser.namauser} Apa yang kamu mau pesan hari ini"),
             SizedBox(height: 30),
             Container(
               width: double.infinity, // Atur lebar sesuai kebutuhan Anda
@@ -226,10 +240,13 @@ class _HomeState extends State<Home> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Makanan"),
+                Text(
+                  "Makanan",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(
-                  height: 200,
-                  width: double.infinity,
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
                   child: GridView.builder(
                     scrollDirection: Axis.horizontal,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -239,58 +256,62 @@ class _HomeState extends State<Home> {
                     ),
                     itemCount: ls.length,
                     itemBuilder: (context, int i) {
-                      
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return Makanan(g: ls1[i], itemCount: itemCount[i]);
-                          }));
-                        },
-                        child: Hero(
-                          tag: ls[i], // Gunakan tag yang unik untuk setiap Hero
-                          child: GridTile(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(40),
-                              clipBehavior: Clip.hardEdge,
-                              child: Image.network(
-                                '${ls[i]}',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            footer: Container(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 3),
-                                child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          txt[i],
-                                          overflow: TextOverflow.ellipsis, // Memotong teks yang terlalu panjang
-                                          maxLines: 1, // Memastikan hanya satu baris yang ditampilkan
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontWeight: FontWeight.bold
+                      return Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return Makanan(
+                                  g: ls1[i], itemCount: itemCount[i]);
+                            }));
+                          },
+                          child: Hero(
+                            tag: ls[
+                                i], // Gunakan tag yang unik untuk setiap Hero
+                            child: GridTile(
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    clipBehavior: Clip.antiAlias,
+                                    child: AspectRatio(
+                                      aspectRatio: 1.3,
+                                      child: Image.network(
+                                        '${ls[i]}',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            "${txt[i]}",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                      ),
-                                  Spacer(),
-
-                                  Text(
-                                      NumberFormat.currency(
-                                        locale: 'id_ID',
-                                        symbol: '',
-                                        decimalDigits: 0,
-                                      ).format(int.parse(harga[i])),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: const Color.fromARGB(
-                                              255, 0, 0, 0))),
-                                ]),
+                                        Spacer(),
+                                        Text(
+                                            NumberFormat.currency(
+                                              locale: 'id_ID',
+                                              symbol: '',
+                                              decimalDigits: 0,
+                                            ).format(int.parse(harga[i])),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -305,9 +326,13 @@ class _HomeState extends State<Home> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Minuman"),
+                Text(
+                  "Minuman",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(
-                  height: 200,
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
                   child: GridView.builder(
                     scrollDirection: Axis.horizontal,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -317,63 +342,59 @@ class _HomeState extends State<Home> {
                     ),
                     itemCount: lsmn.length,
                     itemBuilder: (context, int i) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Minuman(
-                                    minum: lsmn[i],
-                                    itemCount: 1,
-                                  )));
-                        },
-                        child: Hero(
-                          tag:
-                              mn[i], // Gunakan tag yang unik untuk setiap Hero
-                          child: GridTile(
-                            child: ClipRRect(
-                              clipBehavior: Clip.hardEdge,
-                              borderRadius: BorderRadius.circular(40),
-                              child: Image.network(
-                                '${mn[i]}',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            footer: Container(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 3),
-                                child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          jdl[i],
-                                          overflow: TextOverflow.ellipsis, // Memotong teks yang terlalu panjang
-                                          maxLines: 1, // Memastikan hanya satu baris yang ditampilkan
-                                          style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                              fontWeight: FontWeight.bold
+                      return Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return Minuman(
+                                  minum: lsmn[i], itemCount: itemCountmn[i]);
+                            }));
+                          },
+                          child: Hero(
+                            tag: mn[
+                                i], // Gunakan tag yang unik untuk setiap Hero
+                            child: GridTile(
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    clipBehavior: Clip.antiAlias,
+                                    child: AspectRatio(
+                                      aspectRatio: 1.3,
+                                      child: Image.network(
+                                        '${mn[i]}',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            "${jdl[i]}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                      ),
-                                  // Text("${jdl[i]}",
-                                  //     style: TextStyle(
-                                  //         fontWeight: FontWeight.bold,
-                                  //         color: const Color.fromARGB(
-                                  //             255, 0, 0, 0))),
-                                  Spacer(),
-                                  Text(
-                                      NumberFormat.currency(
-                                        locale: 'id_ID',
-                                        symbol: '',
-                                        decimalDigits: 0,
-                                      ).format(int.parse(hargamn[i])),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: const Color.fromARGB(
-                                              255, 0, 0, 0))),
-                                ]),
+                                        Spacer(),
+                                        Text(
+                                            NumberFormat.currency(
+                                              locale: 'id_ID',
+                                              symbol: '',
+                                              decimalDigits: 0,
+                                            ).format(int.parse(hargamn[i])),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

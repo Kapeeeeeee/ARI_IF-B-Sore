@@ -1,28 +1,91 @@
+
 class Account {
   String namauser;
   String nohp;
   int uang;
   String foto;
-  String alamat;
   String deskripsi;
+  final List<Alamat> alamat;
+  final List<CartItem> cart;
+
 
   Account(
       {required this.foto,
       required this.namauser,
       required this.nohp,
       required this.uang,
+      required this.deskripsi,
       required this.alamat,
-      required this.deskripsi});
+      required this.cart,
+      });
 }
+
+class CartItem {
+  final String gambar;
+  final String itemName;
+  final int harga;
+  int itemCount;
+  final String namatoko;
+  bool isSelected;
+
+  CartItem({
+    required this.gambar,
+    required this.itemName,
+    required this.harga,
+    required this.itemCount,
+    required this.namatoko,
+    this.isSelected = false,
+  });
+}
+class Alamat{
+  final String nama;
+  final String detail;
+  final double ongkir;
+  final String nohp;
+
+  Alamat(this.nama, this.detail, this.ongkir, this.nohp);
+  }
 
 var p1 = Account(
     foto:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
-    namauser: "Sung jinwoo",
+    namauser: "Alex Ander Wijaya",
     deskripsi: "Manusia hanyalah alat bagiku ",
     nohp: "081263656724",
-    alamat : "Jl. M.H Thamrin No.140, Pusat Ps., Kec. Medan Kota, Kota Medan, Sumatera Utara 20212",
-    uang: 5000000);
+    uang: 5000000,
+    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
+    cart : []  );
+    
+var p2 = Account(
+    foto:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
+    namauser: "Frederick Liko",
+    deskripsi: "Ez kali tugas tugas ini ",
+    nohp: "081263656724",
+    uang: 5000000,
+    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
+    cart : []  );
+
+var p3 = Account(
+    foto:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
+    namauser: "Kenzie Pragata",
+    deskripsi: "Gausah Sok Keras Dek",
+    nohp: "081263656724",
+    uang: 890000,
+    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
+    cart : []  );
+
+var p4 = Account(
+    foto:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
+    namauser: "Richardo Wijaya",
+    deskripsi: "Genshin Bukan game 18+ ",
+    nohp: "081263656724",
+    uang: 100000,
+    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
+    cart : []  );
+
 
 class Detail {
   String judul;

@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, sort_child_properties_last, prefer_const_literals_to_create_immutables
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tugas_kelompok_semester4/project/autoscroll.dart';
+import 'package:tugas_kelompok_semester4/project/camera.dart';
 import 'package:tugas_kelompok_semester4/project/cart.dart';
 import 'package:tugas_kelompok_semester4/project/profile.dart';
 import 'package:tugas_kelompok_semester4/project/provider.dart';
@@ -10,6 +12,7 @@ import 'package:tugas_kelompok_semester4/project/settings.dart';
 import 'package:tugas_kelompok_semester4/project/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:tugas_kelompok_semester4/project/detail.dart';
+import 'package:camera/camera.dart';
 
 import 'package:tugas_kelompok_semester4/project/tampilan_produk.dart';
 import 'package:flutter/widgets.dart';
@@ -152,6 +155,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool isEyeOpen = true;
+  bool isAmountVisible = true;
+  void toggleEye() {
+    setState(() {
+      isEyeOpen = !isEyeOpen;
+      isAmountVisible = !isAmountVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
@@ -191,41 +203,117 @@ class _HomeState extends State<Home> {
           children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Wallet()));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                        width: 80,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              10), // Atur radius sesuai keinginan Anda
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Wallet",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(235, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 199, 194, 194)
+                                .withOpacity(0.5), // Warna bayangan
+                            spreadRadius: 5, // Menyebar bayangan
+                            blurRadius: 7, // Memperluas bayangan
+                            offset: Offset(0,
+                                3), // Perpindahan bayangan secara horizontal dan vertikal
+                          ),
+                        ],
+                      ),
+                      margin: EdgeInsets.symmetric(horizontal: 0),
+                      width: 270,
+                      height: 90,
+                      padding: EdgeInsets.all(13),
+                      child: Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Saldo Anda",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "${currentUser.uang}",
-                            )
-                          ],
-                        ),
+                              Text(
+                                  isAmountVisible
+                                      ? NumberFormat.currency(
+                                          locale: 'id_ID',
+                                          symbol: '',
+                                          decimalDigits: 0,
+                                        ).format(int.parse(
+                                          currentUser.uang.toString()))
+                                      : '********',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              IconButton(
+                                iconSize: 20,
+                                onPressed: toggleEye,
+                                icon: isEyeOpen
+                                    ? Icon(Icons.remove_red_eye_rounded)
+                                    : Icon(Icons.remove_red_eye_sharp),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                  iconSize: 25,
+                                  onPressed: () {},
+                                  icon: Icon(Icons.add_box)),
+                                   Text("Top up",
+                                  style: TextStyle(
+                                    fontSize: 10
+                                  ),)
+                            ],
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                  iconSize: 25,
+                                  onPressed: () async {
+                                    final cameras =
+                                        await availableCameras(); // Dapatkan daftar kamera yang tersedia
+                                    final firstCamera = cameras.firstWhere(
+                                        (camera) =>
+                                            camera.lensDirection == CameraLensDirection.front); // Pilih kamera belakang
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CameraScreen(camera: firstCamera),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.qr_code)),
+                                  Text("qr scan",
+                                  style: TextStyle(
+                                    fontSize: 10
+                                  ),)
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
             ]),
-            Text("${currentUser.namauser}"),
+            SizedBox(height: 30),
             Text(
                 "Hallo ${currentUser.namauser} Apa yang kamu mau pesan hari ini"),
             SizedBox(height: 30),

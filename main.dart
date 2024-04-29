@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tugas_kelompok_semester4/project/providerbutton.dart';
 import 'package:tugas_kelompok_semester4/project/signup.dart';
+import 'package:tugas_kelompok_semester4/project/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
                 : ThemeMode.light,
             theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
-            home: Home(),
+            home: Login(),
           );
         },
       ),

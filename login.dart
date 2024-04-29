@@ -13,7 +13,6 @@ class _LoginState extends State<Login> {
   TextEditingController t1 = TextEditingController();
   bool _isObscured = true;
   bool isfailed = false;
-  bool isfail = false;
   @override
    Widget build(BuildContext context) {
     return Scaffold(

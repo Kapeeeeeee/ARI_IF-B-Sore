@@ -10,7 +10,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController t1 = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController pwd = TextEditingController();
   bool _isObscured = true;
   bool isfailed = false;
   @override
@@ -48,7 +49,7 @@ class _LoginState extends State<Login> {
               SizedBox(height: 40,),
 
               TextFormField(
-                controller: t1,
+                controller: pwd,
                 style: TextStyle(
                   color: Colors.blue
                 ),
@@ -80,14 +81,15 @@ class _LoginState extends State<Login> {
               ElevatedButton(
                 onPressed: (){
                   setState(() {
-                    if(t1.text == "test"){
+                    if(pwd.text == "test" & nama.text == "test"){
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Home())
                       );
                     }
                     else{
                       isfailed = true;
-                      t1.text = "";
+                      pwd.text = "";
+                      nama.text = "";
                     }
                   });
                 },

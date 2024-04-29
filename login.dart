@@ -1,7 +1,7 @@
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tugas/home.dart';
-import 'package:tugas/signup.dart';
+import 'package:tugas_kelompok_semester4/project/home.dart';
+import 'package:tugas_kelompok_semester4/project/signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

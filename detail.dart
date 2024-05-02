@@ -1,4 +1,3 @@
-
 class Account {
   String namauser;
   String nohp;
@@ -8,16 +7,29 @@ class Account {
   final List<Alamat> alamat;
   final List<CartItem> cart;
 
+  void updateAccount({
+    String? foto,
+    String? namauser,
+    String? deskripsi,
+    String? nohp,
+    List<Alamat>? alamat,
+    List<CartItem>? cart,
+  }) {
+    if (foto != null) this.foto = foto;
+    if (namauser != null) this.namauser = namauser;
+    if (deskripsi != null) this.deskripsi = deskripsi;
+    if (nohp != null) this.nohp = nohp;
+  }
 
-  Account(
-      {required this.foto,
-      required this.namauser,
-      required this.nohp,
-      required this.uang,
-      required this.deskripsi,
-      required this.alamat,
-      required this.cart,
-      });
+  Account({
+    required this.foto,
+    required this.namauser,
+    required this.nohp,
+    required this.uang,
+    required this.deskripsi,
+    required this.alamat,
+    required this.cart,
+  });
 }
 
 class CartItem {
@@ -37,55 +49,79 @@ class CartItem {
     this.isSelected = false,
   });
 }
-class Alamat{
+
+class Alamat {
   final String nama;
   final String detail;
   final double ongkir;
   final String nohp;
 
   Alamat(this.nama, this.detail, this.ongkir, this.nohp);
-  }
+}
 
 var p1 = Account(
     foto:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
+        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTaV3v6GRUz97FAP1lg5CYiKqCCyYVFMrTjbcdcjwEGSAdt1WNa",
     namauser: "Alex Ander Wijaya",
     deskripsi: "Manusia hanyalah alat bagiku ",
     nohp: "081263656724",
     uang: 5000000,
-    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
-    cart : []  );
-    
+    alamat: [
+      Alamat(
+          "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
+          "Rumah Alex",
+          10000,
+          "081263656724"),
+    ],
+    cart: []);
+
 var p2 = Account(
     foto:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
+        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ4TKkTFl8wtncoWv5SGoipcqvJB0vpyYTPs4UMAX5DVvWKg0n0",
     namauser: "Frederick Liko",
     deskripsi: "Ez kali tugas tugas ini ",
     nohp: "081263656724",
     uang: 5000000,
-    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
-    cart : []  );
+    alamat: [
+      Alamat(
+          "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
+          "Rumah Alex",
+          10000,
+          "081263656724"),
+    ],
+    cart: []);
 
 var p3 = Account(
     foto:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYlM-O9Yk5DFXfUxUKv13c07Da35dt8m6nMSqgoRLROJlfWQAkNxiBdlGxIgYw768m&usqp=CAU",
     namauser: "Kenzie Pragata",
     deskripsi: "Gausah Sok Keras Dek",
     nohp: "081263656724",
     uang: 890000,
-    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
-    cart : []  );
+    alamat: [
+      Alamat(
+          "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
+          "Rumah Alex",
+          10000,
+          "081263656724"),
+    ],
+    cart: []);
 
 var p4 = Account(
     foto:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgJWlW9yisT3okljvdykIR5zxvCnddQ9cVEUitmPPqw&s",
+        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRApZOIgvNOHjyiUUZoFRzaxggYeyT_Fw8bIU44zJRAqgug7dcK",
     namauser: "Richardo Wijaya",
     deskripsi: "Genshin Bukan game 18+ ",
     nohp: "081263656724",
     uang: 100000,
-    alamat: [Alamat("Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend", "Rumah Alex", 10000,"081263656724"),],
-    cart : []  );
-
+    alamat: [
+      Alamat(
+          "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
+          "Rumah Alex",
+          10000,
+          "081263656724"),
+    ],
+    cart: []);
 
 class Detail {
   String judul;
@@ -96,18 +132,17 @@ class Detail {
   String rating;
   String type;
   int itemCount;
- 
 
-  Detail(
-      {required this.judul,
-      required this.desc,
-      required this.fileName,
-      required this.harga,
-      required this.namatoko,
-      required this.rating,
-      required this.type,
-      required this.itemCount,
-      });
+  Detail({
+    required this.judul,
+    required this.desc,
+    required this.fileName,
+    required this.harga,
+    required this.namatoko,
+    required this.rating,
+    required this.type,
+    required this.itemCount,
+  });
 }
 
 List<String> gambarMakanan = [
@@ -140,7 +175,7 @@ List<String> banner = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGEB8WTxNtfjUhMUAfpPUyfcZgjZ4jSO1hX-5mSB9ypThSFNF7FXbtCtxSwZGrY7M8dFM&usqp=CAU",
   "https://marketplace.canva.com/EAF1E7bapfw/2/0/1600w/canva-merah-kuning-modern-promosi-makanan-spanduk-NhWmrRXLe9g.jpg",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo3iUW70mDaTiItiLt2h7hBtsSGr465RpJ8w9frG_FWw&s"
-  ];
+];
 
 var m1 = Detail(
     judul: "Pie",
@@ -150,8 +185,8 @@ var m1 = Detail(
     harga: 20000,
     namatoko: "Toko Clara",
     rating: "3.9",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m2 = Detail(
     judul: "Omelette Beef",
@@ -161,8 +196,8 @@ var m2 = Detail(
     harga: 35000,
     namatoko: "Toko Clara",
     rating: "4.8",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m3 = Detail(
     judul: "Cookies",
@@ -172,8 +207,8 @@ var m3 = Detail(
     harga: 12000,
     namatoko: "Toko Clara",
     rating: "4.0",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m4 = Detail(
     judul: "Kebab",
@@ -183,8 +218,8 @@ var m4 = Detail(
     harga: 20000,
     namatoko: "Toko Clara",
     rating: "4.3",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m5 = Detail(
     judul: "Pertzel",
@@ -194,8 +229,8 @@ var m5 = Detail(
     harga: 70000,
     namatoko: "Toko Clara",
     rating: "3.0",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m6 = Detail(
     judul: "Bolu Gulung",
@@ -205,8 +240,8 @@ var m6 = Detail(
     harga: 60000,
     namatoko: "Toko Musang King",
     rating: "4.6",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m7 = Detail(
     judul: "Sandwich",
@@ -216,19 +251,19 @@ var m7 = Detail(
     harga: 27000,
     namatoko: "Toko Musang King",
     rating: "3.8",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m8 = Detail(
     judul: "Pizza",
     desc:
         "Pizza dengan keju import yang rasanya tiada tanding, kondiment yang dipakai juga tidak main main. semua premium dengan kualitas kasta tinggi harga mya",
-   fileName: gambarMakanan[7],
+    fileName: gambarMakanan[7],
     harga: 50000,
     namatoko: "Toko Musang King",
     rating: "5.0",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m9 = Detail(
     judul: "Burger",
@@ -238,8 +273,8 @@ var m9 = Detail(
     harga: 32000,
     namatoko: "Toko Musang King",
     rating: "5.0",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var m10 = Detail(
     judul: "French Fries",
@@ -249,8 +284,8 @@ var m10 = Detail(
     harga: 17999,
     namatoko: "Toko Musang King",
     rating: "4.9",
-    type:"Makanan",
-    itemCount:1);
+    type: "Makanan",
+    itemCount: 1);
 
 var mn1 = Detail(
     judul: "Jus Strawberry",
@@ -260,8 +295,8 @@ var mn1 = Detail(
     harga: 10000,
     namatoko: "Toko Asiong",
     rating: "4.0",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn2 = Detail(
     judul: "Coffee Milk",
@@ -271,8 +306,8 @@ var mn2 = Detail(
     harga: 12000,
     namatoko: "Toko Asiong",
     rating: "4.0",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn3 = Detail(
     judul: "Milk Tea",
@@ -282,8 +317,8 @@ var mn3 = Detail(
     harga: 12000,
     namatoko: "Toko Asiong",
     rating: "4.1",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn4 = Detail(
     judul: "Boba Milk",
@@ -293,8 +328,8 @@ var mn4 = Detail(
     harga: 15000,
     namatoko: "Toko Asiong",
     rating: "4.5",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn5 = Detail(
     judul: "Milo Special",
@@ -304,8 +339,8 @@ var mn5 = Detail(
     harga: 30000,
     namatoko: "Toko Asiong",
     rating: "4.2",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn6 = Detail(
     judul: "Orange Jus",
@@ -315,8 +350,8 @@ var mn6 = Detail(
     harga: 10000,
     namatoko: "Toko Sejahtera",
     rating: "3.8",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn7 = Detail(
     judul: "Jus Banana Berry Mixed",
@@ -326,8 +361,8 @@ var mn7 = Detail(
     harga: 22000,
     namatoko: "Toko Sejahtera",
     rating: "4.6",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn8 = Detail(
     judul: "Jus Kiwi",
@@ -337,8 +372,8 @@ var mn8 = Detail(
     harga: 12000,
     namatoko: "Toko Sejahtera",
     rating: "4.2",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn9 = Detail(
     judul: "Mixed Strawberry With Blueberry Sunday",
@@ -348,8 +383,8 @@ var mn9 = Detail(
     harga: 21000,
     namatoko: "Toko Sejahtera",
     rating: "3.9",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);
 
 var mn10 = Detail(
     judul: "Avocado Chocolate",
@@ -359,5 +394,5 @@ var mn10 = Detail(
     harga: 18000,
     namatoko: "Toko Sejahtera",
     rating: "5.0",
-    type:"Minuman",
-    itemCount:1);
+    type: "Minuman",
+    itemCount: 1);

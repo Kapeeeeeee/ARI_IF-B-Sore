@@ -1,8 +1,8 @@
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas/accprov.dart';
-import 'package:tugas/login.dart';
+import 'package:tugas_kelompok_semester4/project/login.dart';
+import 'package:tugas_kelompok_semester4/project/accprov.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});

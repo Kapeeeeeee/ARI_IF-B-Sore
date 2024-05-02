@@ -1,9 +1,9 @@
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas/accprov.dart';
-import 'package:tugas/home.dart';
-import 'package:tugas/signup.dart';
+import 'package:tugas_kelompok_semester4/project/accprov.dart';
+import 'package:tugas_kelompok_semester4/project/home.dart';
+import 'package:tugas_kelompok_semester4/project/signup.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});

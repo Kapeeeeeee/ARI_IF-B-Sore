@@ -5,6 +5,7 @@ import 'detail.dart';
 import 'profile.dart';
 import 'history.dart';
 import 'home.dart';
+import 'walletPage.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -20,6 +21,8 @@ class _NavbarState extends State<Navbar> {
     if (index == 0) {
       return Home();
     } else if (index == 1) {
+      return WalletPage();
+    } else if (index == 2) {
       return HistoryPembelian();
     } else {
       return Profile();
@@ -34,6 +37,9 @@ class _NavbarState extends State<Navbar> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet_rounded),
+              label: 'Wallet'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
           BottomNavigationBarItem(
               icon: CircleAvatar(
@@ -44,6 +50,7 @@ class _NavbarState extends State<Navbar> {
               ),
               label: 'Profile'),
         ],
+        unselectedItemColor: Colors.grey[800],
         selectedItemColor: Colors.red,
         currentIndex: current,
         onTap: (int index) {

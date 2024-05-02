@@ -2,26 +2,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tugas/accprov.dart';
-import 'package:tugas/login.dart';
+import 'package:tugas/home.dart';
+import 'package:tugas/signup.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class LogIn extends StatefulWidget {
+  const LogIn({super.key});
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<LogIn> createState() => _LogInState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _LogInState extends State<LogIn> {
   TextEditingController name = TextEditingController();
   TextEditingController pwd = TextEditingController();
-  TextEditingController pwd1 = TextEditingController();
   bool _isObscured = true;
-  bool isObscure = true;
   bool isfailed = false;
+  bool isLoggedIn = false;
   @override
    Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SIGN UP"),
+        title: Text("LOGIN"),
         centerTitle: true,
       ),
       body: Container(
@@ -75,36 +75,7 @@ class _SignUpState extends State<SignUp> {
                   },
                 ),
                   hintText: "Isikan password kamu disini",
-                  hintStyle: TextStyle(color: const Color.fromARGB(255, 49, 39, 39)),
-                  prefixIcon: Icon(Icons.lock),
-                ),
-              ),
-
-              SizedBox(height: 40,),
-
-              TextFormField(
-                controller: pwd1,
-                style: TextStyle(
-                  color: Colors.blue
-                ),
-                obscureText: isObscure,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.redAccent)
-                  ),
-                  labelText: "Password",
-                  suffixIcon: IconButton(
-                  icon: Icon(isObscure ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      isObscure = !isObscure;
-                    });
-                  },
-                ),
-                  hintText: "Isikan ulang password kamu disini",
+                  errorText: isfailed ? "Incorrect username dan password" : null,
                   hintStyle: TextStyle(color: const Color.fromARGB(255, 49, 39, 39)),
                   prefixIcon: Icon(Icons.lock),
                 ),
@@ -112,23 +83,33 @@ class _SignUpState extends State<SignUp> {
 
               SizedBox(height: 40,),
               ElevatedButton(
-                onPressed: (){
-                  setState(() {
-                    if(pwd1.text == pwd.text){
-                      Login p = Login(username: name.text, password: pwd1.text);
-                      Provider.of<LoginProvider>(context, listen: false).addAcc(p);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => LogIn())
-                      );
+                onPressed: () {
+
+                  for (var e in Provider.of<LoginProvider>(context, listen: false).myLogin) {
+                    if (pwd.text == e.password && name.text == e.username) {
+                      isLoggedIn = true; 
+                      break;
                     }
-                  });
+                  }
+    
+                  if (isLoggedIn) {
+                    Navigator.pushReplacement( context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
+                  } else {
+                    setState(() {
+                      isfailed = true;
+                      pwd.text = ""; 
+                      name.text = ""; 
+                    });
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
-                  fixedSize: Size(310,50),
+                  fixedSize: Size(310, 50),
                 ),
-                child: Text("SIGN UP")
+                child: Text("LOG IN"),
               ),
               
               SizedBox(height: 40,),
@@ -136,15 +117,15 @@ class _SignUpState extends State<SignUp> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?"),
+                  Text("Don't have an account?"),
                   SizedBox(width: 25,),
                   TextButton(
                 onPressed: (){setState(() {
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LogIn())
+                        MaterialPageRoute(builder: (context) => SignUp())
                 );
                   });},
-                child: Text("LOG IN"),
+                child: Text("Sign Up"),
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.redAccent,
                 ),

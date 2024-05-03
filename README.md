@@ -1,3 +1,7 @@
 Ketika pull jangan lupa ubah nama package, krna nama package kita beda-beda
 
-Ada update chat di grup
+dependencies : //pubspec.yaml
+cupertino_icons
+provider
+flutter_rating_bar
+intl

@@ -12,6 +12,7 @@ class SlideScreen extends StatefulWidget {
 class _SlideScreenState extends State<SlideScreen> {
   PageController _pageController = PageController();
   int _currentPage = 0;
+  bool _isDisposed = false;
 
   @override
   void initState() {
@@ -20,7 +21,8 @@ class _SlideScreenState extends State<SlideScreen> {
   }
 
   void _autoSlide() {
-    Future.delayed(Duration(seconds: 3)).then((_) {
+  Future.delayed(Duration(seconds: 3)).then((_) {
+    if (!_isDisposed) { // Pastikan komponen belum dihapus sebelum melanjutkan pemanggilan rekursif
       if (_currentPage < widget.imagePaths.length - 1) {
         _pageController.nextPage(
           duration: Duration(milliseconds: 500),
@@ -30,8 +32,16 @@ class _SlideScreenState extends State<SlideScreen> {
         _pageController.jumpToPage(0);
       }
       _autoSlide();
-    });
-  }
+    }
+  });
+}
+
+  @override
+void dispose() {
+  _pageController.dispose(); // Menghentikan penggunaan PageController
+  _isDisposed = true; // Tandai bahwa komponen sudah dihapus
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {

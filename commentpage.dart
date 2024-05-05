@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/provider.dart';
-
-
+import 'provider.dart';
 
 class CommentPage extends StatefulWidget {
   @override
@@ -21,37 +19,46 @@ class _CommentPageState extends State<CommentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Comments'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+          },
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FilterChip(
-                  label: Text('All'),
-                  selected: _selectedRating == null,
-                  selectedColor: Colors.yellow,
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _selectedRating = selected ? null : 0;
-                    });
-                  },
-                ),
-                for (int i = 1; i <= 5; i++)
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   FilterChip(
-                    label: Text('$i Star'),
+                    label: Text('All'),
+                    selected: _selectedRating == null,
                     selectedColor: Colors.yellow,
-                    selected: _selectedRating == i,
                     onSelected: (bool selected) {
                       setState(() {
-                        _selectedRating = selected ? i : null;
+                        _selectedRating = selected ? null : 0;
                       });
                     },
                   ),
-              ],
+                  for (int i = 1; i <= 5; i++)
+                    FilterChip(
+                      label: Text('$i Star'),
+                      selectedColor: Colors.yellow,
+                      selected: _selectedRating == i,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _selectedRating = selected ? i : null;
+                        });
+                      },
+                    ),
+                ],
+              ),
             ),
           ),
           Expanded(

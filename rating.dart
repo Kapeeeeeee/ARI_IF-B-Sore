@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/commentpage.dart';
-import 'package:tugas_kelompok_semester4/project/detail.dart';
-import 'package:tugas_kelompok_semester4/project/provider.dart';
+import 'commentpage.dart';
+import 'detail.dart';
+import 'provider.dart';
 
 class Rating extends StatefulWidget {
   final List<CartItem>? selectedItems;
@@ -88,7 +87,6 @@ class _RatingState extends State<Rating> {
               SizedBox(height: 20),
               TextField(
                 controller: _commentController,
-                
                 decoration: InputDecoration(
                   hintText: "Write your comment here...",
                   suffixIcon: IconButton(
@@ -98,11 +96,11 @@ class _RatingState extends State<Rating> {
                       _commentController.clear();
                       _selectedChips.clear();
                       _rating = 0;
-
-                      Navigator.pushAndRemoveUntil(
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CommentPage()),
-                        (route) => false,
+                        MaterialPageRoute(
+                          builder: (context) => CommentPage(),
+                        ),
                       );
                     },
                   ),
@@ -167,18 +165,16 @@ class _RatingState extends State<Rating> {
     Account currentUser =
         Provider.of<AccountProvider>(context, listen: false).currentAccount;
     String commentText = _commentController.text;
-    if (commentText.isNotEmpty && currentUser != null) {
-      // Periksa currentUser tidak null
-      Map<String, dynamic> newComment = {
-        'avatar': currentUser.foto,
-        'name': currentUser.namauser,
-        'rating': _rating,
-        'chips': List.from(_selectedChips),
-        'comment': commentText,
-      };
-      commentData.addComment(newComment);
-    } else {
-      // Handle jika currentUser null atau commentText kosong
-    }
+    // Include the rating and selected chips even if the comment text is empty
+    Map<String, dynamic> newComment = {
+      'avatar': currentUser.foto,
+      'name': currentUser.namauser,
+      'rating': _rating,
+      'chips': List.from(_selectedChips),
+      'comment': commentText,
+    };
+    // Add the comment to the comment data
+    commentData.addComment(newComment);
   }
+
 }

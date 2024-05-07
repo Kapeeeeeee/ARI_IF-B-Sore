@@ -1,32 +1,51 @@
 import 'package:flutter/material.dart';
 
-class changeLanguage extends StatefulWidget {
-  const changeLanguage({super.key});
-
-  @override
-  State<changeLanguage> createState() => _changeLanguageState();
-}
-
-class _changeLanguageState extends State<changeLanguage> {
+class LanguageChangePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Change Language"),
+        title: Text('Change Language'),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                  "Berisi settingan pilihan untuk memilih bahasa pada tampilan ui aplikasi ( inggris atau indonesia )"),
-            )
+            LanguageOption(
+              language: 'English',
+              onPressed: () {
+                // logik
+              },
+            ),
+            SizedBox(height: 16.0),
+            LanguageOption(
+              language: 'Indonesian',
+              onPressed: () {
+                // logik
+              },
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class LanguageOption extends StatelessWidget {
+  final String language;
+  final VoidCallback onPressed;
+
+  const LanguageOption({
+    required this.language,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(language),
     );
   }
 }

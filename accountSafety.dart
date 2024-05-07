@@ -1,32 +1,51 @@
 import 'package:flutter/material.dart';
 
-class accSafety extends StatefulWidget {
-  const accSafety({super.key});
-
-  @override
-  State<accSafety> createState() => _accSafetyState();
-}
-
-class _accSafetyState extends State<accSafety> {
+class LanguageChangePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Account Safety"),
+        title: Text('Change Language'),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                  "Berisi settingan akun seperti 2 step authentication, finger print ( mungkin ), dll"),
-            )
+            LanguageOption(
+              language: 'English',
+              onPressed: () {
+                // logik
+              },
+            ),
+            SizedBox(height: 16.0),
+            LanguageOption(
+              language: 'Indonesian',
+              onPressed: () {
+                // logik
+              },
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class LanguageOption extends StatelessWidget {
+  final String language;
+  final VoidCallback onPressed;
+
+  const LanguageOption({
+    required this.language,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(language),
     );
   }
 }

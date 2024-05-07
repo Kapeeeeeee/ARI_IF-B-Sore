@@ -76,7 +76,7 @@ class _ProfileState extends State<Profile> {
             InkWell(
               onTap: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Promo()));
+                    .push(MaterialPageRoute(builder: (context) => PromoPage()));
               },
               child: ListTile(
                 title: Text('Promo'),
@@ -94,7 +94,7 @@ class _ProfileState extends State<Profile> {
             InkWell(
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => changeLanguage()));
+                    MaterialPageRoute(builder: (context) => LanguageChangePage()));
               },
               child: ListTile(
                 title: Text('Change Language'),
@@ -112,7 +112,7 @@ class _ProfileState extends State<Profile> {
             InkWell(
               onTap: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => accSafety()));
+                    .push(MaterialPageRoute(builder: (context) => AccountSafetyPage()));
               },
               child: ListTile(
                 title: Text('Account Safety'),

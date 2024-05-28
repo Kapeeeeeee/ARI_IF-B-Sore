@@ -180,14 +180,14 @@ class _ProfileState extends State<Profile> {
   void _showEditProfileDialog(
       BuildContext context, Function(Account) onUpdate) {
     // Controllers for handling user input
+    TextEditingController pictureController =
+        TextEditingController(text: p1.foto);
     TextEditingController nameController =
         TextEditingController(text: p1.namauser);
     TextEditingController descriptionController =
         TextEditingController(text: p1.deskripsi);
     TextEditingController phoneController =
         TextEditingController(text: p1.nohp);
-    TextEditingController pictureController =
-        TextEditingController(); // Controller for profile picture link
 
     showDialog(
       context: context,

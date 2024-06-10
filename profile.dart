@@ -83,17 +83,14 @@ class _ProfileState extends State<Profile> {
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
     Text(
-      '- Nama: ${alamat.nama}',
+      'Nama: ${alamat.nama}',
       style: TextStyle(fontSize: 16),
     ),
     Text(
-      '  Detail: ${alamat.detail}',
+      'Detail: ${alamat.detail}',
       style: TextStyle(fontSize: 16),
     ),
-    Text(
-      '  No. HP: ${alamat.nohp}',
-      style: TextStyle(fontSize: 16),
-    ),
+    
   ],
 )).toList(),
                   SizedBox(height: 5),
@@ -256,7 +253,7 @@ List<TextEditingController> addressNameControllers = currentUser.alamat
                 controller: phoneController,
                 decoration: InputDecoration(labelText: 'Phone'),
               ),
-              
+              SizedBox(height: 10,),
                for (int i = 0; i < currentUser.alamat.length; i++)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

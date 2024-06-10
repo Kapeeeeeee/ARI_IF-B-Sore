@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tugas_kelompok_semester4/project/cart.dart';
-import 'package:tugas_kelompok_semester4/project/commentpage.dart';
-import 'package:tugas_kelompok_semester4/project/detail.dart';
+import 'package:kerkom/cart.dart';
+import 'package:kerkom/commentpage.dart';
+import 'package:kerkom/detail.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/provider.dart';
+import 'package:kerkom/provider.dart';
 
 class Makanan extends StatelessWidget {
   final Detail g;
@@ -21,7 +21,7 @@ class Makanan extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -30,6 +30,7 @@ class Makanan extends StatelessWidget {
                 child: Container(
                   height: 300, 
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                       image: NetworkImage(g.fileName),
                       fit: BoxFit.cover,
@@ -139,6 +140,7 @@ class Makanan extends StatelessWidget {
                 g.desc,
                 style: TextStyle(fontSize: 15),
               ),
+              
             ],
           ),
         ),
@@ -170,7 +172,7 @@ class Minuman extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -179,6 +181,7 @@ class Minuman extends StatelessWidget {
                 child: Container(
                   height: 300, // Tentukan tinggi sesuai kebutuhan Anda
                   decoration: BoxDecoration(
+                    borderRadius:  BorderRadius.circular(10),
                     image: DecorationImage(
                       image: NetworkImage(minum.fileName),
                       fit: BoxFit.cover,

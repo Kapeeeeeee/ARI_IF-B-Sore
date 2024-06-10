@@ -4,6 +4,7 @@ class Account {
   int uang;
   String foto;
   String deskripsi;
+  final List history;
   final List<Alamat> alamat;
   final List<CartItem> cart;
 
@@ -27,8 +28,10 @@ class Account {
     required this.nohp,
     required this.uang,
     required this.deskripsi,
+    this.history = const [],
     required this.alamat,
     required this.cart,
+
   });
 }
 
@@ -66,6 +69,7 @@ var p1 = Account(
     deskripsi: "Manusia hanyalah alat bagiku ",
     nohp: "081263656724",
     uang: 5000000,
+    history:[10000,30000,40000,100000],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
@@ -82,6 +86,7 @@ var p2 = Account(
     deskripsi: "Ez kali tugas tugas ini ",
     nohp: "081263656724",
     uang: 5000000,
+    history:[10000,30000,40000,100000],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
@@ -98,6 +103,7 @@ var p3 = Account(
     deskripsi: "Gausah Sok Keras Dek",
     nohp: "081263656724",
     uang: 890000,
+    history:[10000,30000,40000,100000],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
@@ -114,6 +120,7 @@ var p4 = Account(
     deskripsi: "Genshin Bukan game 18+ ",
     nohp: "081263656724",
     uang: 100000,
+    history:[10000,30000,40000,100000],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
@@ -172,10 +179,10 @@ List<String> gambarMinuman = [
 ];
 
 List<String> banner = [
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGEB8WTxNtfjUhMUAfpPUyfcZgjZ4jSO1hX-5mSB9ypThSFNF7FXbtCtxSwZGrY7M8dFM&usqp=CAU",
+  "https://images.unsplash.com/photo-1611599538835-b52a8c2af7fe?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "https://marketplace.canva.com/EAF1E7bapfw/2/0/1600w/canva-merah-kuning-modern-promosi-makanan-spanduk-NhWmrRXLe9g.jpg",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo3iUW70mDaTiItiLt2h7hBtsSGr465RpJ8w9frG_FWw&s"
-];
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo3iUW70mDaTiItiLt2h7hBtsSGr465RpJ8w9frG_FWw&s",
+  "https://images.unsplash.com/photo-1611599538835-b52a8c2af7fe?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",];
 
 var m1 = Detail(
     judul: "Pie",

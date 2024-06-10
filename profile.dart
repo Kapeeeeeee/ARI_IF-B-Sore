@@ -1,8 +1,10 @@
+// ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:kerkom/project/home.dart';
-import 'package:kerkom/project/detail.dart';
+import 'package:kerkom/home.dart';
+import 'package:kerkom/detail.dart';
 import 'package:provider/provider.dart';
-import 'package:kerkom/project/provider.dart'; // Make sure to replace this with the correct location of the AccountProvider file
+import 'package:kerkom/provider.dart';
 import 'manageAccount.dart';
 import 'promo.dart';
 import 'changeLanguague.dart';
@@ -17,7 +19,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    // Accessing the provider to get the current user data
     Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
 
     return Scaffold(
@@ -38,10 +39,9 @@ class _ProfileState extends State<Profile> {
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      _showEditProfileDialog(context, (updatedAccount) {
+                      _showEditProfileDialog(context, currentUser, (updatedAccount) {
                         setState(() {
-                          // Update the profile with the new values
-                          p1 = updatedAccount;
+                          currentUser = updatedAccount;
                         });
                       });
                     },
@@ -69,6 +69,35 @@ class _ProfileState extends State<Profile> {
                     currentUser.nohp,
                     style: TextStyle(fontSize: 16),
                   ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Uang: ${currentUser.uang}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 5),
+                   Text(
+  'Alamat:',
+  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+),
+...currentUser.alamat.map((alamat) => Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      '- Nama: ${alamat.nama}',
+      style: TextStyle(fontSize: 16),
+    ),
+    Text(
+      '  Detail: ${alamat.detail}',
+      style: TextStyle(fontSize: 16),
+    ),
+    Text(
+      '  No. HP: ${alamat.nohp}',
+      style: TextStyle(fontSize: 16),
+    ),
+  ],
+)).toList(),
+                  SizedBox(height: 5),
+                  
                 ],
               ),
             ),
@@ -178,79 +207,125 @@ class _ProfileState extends State<Profile> {
   }
 
   void _showEditProfileDialog(
-      BuildContext context, Function(Account) onUpdate) {
-    // Controllers for handling user input
-    TextEditingController pictureController =
-        TextEditingController(text: p1.foto);
-    TextEditingController nameController =
-        TextEditingController(text: p1.namauser);
-    TextEditingController descriptionController =
-        TextEditingController(text: p1.deskripsi);
-    TextEditingController phoneController =
-        TextEditingController(text: p1.nohp);
+    BuildContext context, Account currentUser, Function(Account) onUpdate) {
+  TextEditingController nameController =
+      TextEditingController(text: currentUser.namauser);
+  TextEditingController descriptionController =
+      TextEditingController(text: currentUser.deskripsi);
+  TextEditingController phoneController =
+      TextEditingController(text: currentUser.nohp);
+  TextEditingController pictureController =
+      TextEditingController(text: currentUser.foto);
+  
+List<TextEditingController> addressNameControllers = currentUser.alamat
+      .map((alamat) => TextEditingController(text: alamat.nama))
+      .toList();
+  List<TextEditingController> addressDetailControllers = currentUser.alamat
+      .map((alamat) => TextEditingController(text: alamat.detail))
+      .toList();
+  List<TextEditingController> addressOngkirControllers = currentUser.alamat
+      .map((alamat) => TextEditingController(text: alamat.ongkir.toString()))
+      .toList();
+  List<TextEditingController> addressPhoneControllers = currentUser.alamat
+      .map((alamat) => TextEditingController(text: alamat.nohp))
+      .toList();
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Profile'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: pictureController,
-                  decoration: InputDecoration(labelText: 'Profile Picture'),
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Edit Profile'),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: pictureController,
+                decoration: InputDecoration(labelText: 'Profile Picture'),
+              ),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Name'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+              TextField(
+                controller: phoneController,
+                decoration: InputDecoration(labelText: 'Phone'),
+              ),
+              
+               for (int i = 0; i < currentUser.alamat.length; i++)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Alamat ${i + 1}'),
+                    TextField(
+                      controller: addressNameControllers[i],
+                      decoration: InputDecoration(labelText: 'Nama'),
+                    ),
+                    TextField(
+                      controller: addressDetailControllers[i],
+                      decoration: InputDecoration(labelText: 'Detail'),
+                    ),
+                    
+                    TextField(
+                      controller: addressPhoneControllers[i],
+                      decoration: InputDecoration(labelText: 'No. HP'),
+                    ),
+                  ],
                 ),
-                TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
-                ),
-                TextField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
-                ),
-                TextField(
-                  controller: phoneController,
-                  decoration: InputDecoration(labelText: 'Phone'),
-                ),
-              ],
-            ),
+              
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Get new values from text controllers
-                String newPicture = pictureController.text;
-                String newName = nameController.text;
-                String newDescription = descriptionController.text;
-                String newPhone = phoneController.text;
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              String newPicture = pictureController.text;
+              String newName = nameController.text;
+              String newDescription = descriptionController.text;
+              String newPhone = phoneController.text;
+             
+              List<Alamat> newAddress = [];
+              for (int i = 0; i < currentUser.alamat.length; i++) {
+                newAddress.add(Alamat(
+                  
+                  addressNameControllers[i].text,
+                  addressDetailControllers[i].text,
+                  double.parse(addressOngkirControllers[i].text),
+                  addressPhoneControllers[i].text,
+                ));
+              }
+              
 
-                // Update the account information
-                p1.updateAccount(
-                  foto: newPicture,
-                  namauser: newName,
-                  deskripsi: newDescription,
-                  nohp: newPhone,
-                );
+              Account updatedAccount = Account(
+                foto: newPicture,
+                namauser: newName,
+                deskripsi: newDescription,
+                nohp: newPhone,
+                uang: currentUser.uang,
+                alamat: newAddress,
+                cart: currentUser.cart,
+              );
 
-                // Close the dialog
-                Navigator.of(context).pop();
+              Navigator.of(context).pop();
+              onUpdate(updatedAccount);
+            },
+            child: Text('Save'),
+          ),
+        ],
+      );
+    },
+  );
+}
 
-                // Call the callback function to update UI with new values
-                onUpdate(p1);
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }

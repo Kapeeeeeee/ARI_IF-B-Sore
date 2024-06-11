@@ -1,15 +1,15 @@
-// ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:kerkom/home.dart';
-import 'package:kerkom/detail.dart';
+import 'home.dart';
+import 'detail.dart';
 import 'package:provider/provider.dart';
-import 'package:kerkom/provider.dart';
+import 'provider.dart';
 import 'manageAccount.dart';
 import 'promo.dart';
 import 'changeLanguague.dart';
 import 'notifications.dart';
 import 'accountSafety.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class Profile extends StatefulWidget {
   @override
@@ -17,8 +17,21 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  File? _image;
+  final picker = ImagePicker();
+  Future<void> _pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Accessing the provider to get the current user data
     Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
 
     return Scaffold(
@@ -26,21 +39,28 @@ class _ProfileState extends State<Profile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: 100),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(currentUser.foto),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: _image != null
+                          ? FileImage(_image!)
+                          : NetworkImage(currentUser.foto) as ImageProvider,
+                    ),
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      _showEditProfileDialog(context, currentUser, (updatedAccount) {
+                      _showEditProfileDialog(context, currentUser,
+                          (updatedAccount) {
                         setState(() {
+                          // Update the profile with the new values
                           currentUser = updatedAccount;
                         });
                       });
@@ -75,26 +95,26 @@ class _ProfileState extends State<Profile> {
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 5),
-                   Text(
-  'Alamat:',
-  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-),
-...currentUser.alamat.map((alamat) => Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text(
-      'Nama: ${alamat.nama}',
-      style: TextStyle(fontSize: 16),
-    ),
-    Text(
-      'Detail: ${alamat.detail}',
-      style: TextStyle(fontSize: 16),
-    ),
-    
-  ],
-)).toList(),
+                  Text(
+                    'Alamat:',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  ...currentUser.alamat
+                      .map((alamat) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Nama: ${alamat.nama}',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              Text(
+                                'Detail: ${alamat.detail}',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ))
+                      .toList(),
                   SizedBox(height: 5),
-                  
                 ],
               ),
             ),
@@ -119,8 +139,8 @@ class _ProfileState extends State<Profile> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => LanguageChangePage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => LanguageChangePage()));
               },
               child: ListTile(
                 title: Text('Change Language'),
@@ -137,8 +157,8 @@ class _ProfileState extends State<Profile> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => AccountSafetyPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AccountSafetyPage()));
               },
               child: ListTile(
                 title: Text('Account Safety'),
@@ -204,125 +224,117 @@ class _ProfileState extends State<Profile> {
   }
 
   void _showEditProfileDialog(
-    BuildContext context, Account currentUser, Function(Account) onUpdate) {
-  TextEditingController nameController =
-      TextEditingController(text: currentUser.namauser);
-  TextEditingController descriptionController =
-      TextEditingController(text: currentUser.deskripsi);
-  TextEditingController phoneController =
-      TextEditingController(text: currentUser.nohp);
-  TextEditingController pictureController =
-      TextEditingController(text: currentUser.foto);
-  
-List<TextEditingController> addressNameControllers = currentUser.alamat
-      .map((alamat) => TextEditingController(text: alamat.nama))
-      .toList();
-  List<TextEditingController> addressDetailControllers = currentUser.alamat
-      .map((alamat) => TextEditingController(text: alamat.detail))
-      .toList();
-  List<TextEditingController> addressOngkirControllers = currentUser.alamat
-      .map((alamat) => TextEditingController(text: alamat.ongkir.toString()))
-      .toList();
-  List<TextEditingController> addressPhoneControllers = currentUser.alamat
-      .map((alamat) => TextEditingController(text: alamat.nohp))
-      .toList();
+      BuildContext context, Account currentUser, Function(Account) onUpdate) {
+    TextEditingController nameController =
+        TextEditingController(text: currentUser.namauser);
+    TextEditingController descriptionController =
+        TextEditingController(text: currentUser.deskripsi);
+    TextEditingController phoneController =
+        TextEditingController(text: currentUser.nohp);
+    TextEditingController pictureController =
+        TextEditingController(text: currentUser.foto);
 
+    List<TextEditingController> addressNameControllers = currentUser.alamat
+        .map((alamat) => TextEditingController(text: alamat.nama))
+        .toList();
+    List<TextEditingController> addressDetailControllers = currentUser.alamat
+        .map((alamat) => TextEditingController(text: alamat.detail))
+        .toList();
+    List<TextEditingController> addressOngkirControllers = currentUser.alamat
+        .map((alamat) => TextEditingController(text: alamat.ongkir.toString()))
+        .toList();
+    List<TextEditingController> addressPhoneControllers = currentUser.alamat
+        .map((alamat) => TextEditingController(text: alamat.nohp))
+        .toList();
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Edit Profile'),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: pictureController,
-                decoration: InputDecoration(labelText: 'Profile Picture'),
-              ),
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-              ),
-              TextField(
-                controller: phoneController,
-                decoration: InputDecoration(labelText: 'Phone'),
-              ),
-              SizedBox(height: 10,),
-               for (int i = 0; i < currentUser.alamat.length; i++)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Alamat ${i + 1}'),
-                    TextField(
-                      controller: addressNameControllers[i],
-                      decoration: InputDecoration(labelText: 'Nama'),
-                    ),
-                    TextField(
-                      controller: addressDetailControllers[i],
-                      decoration: InputDecoration(labelText: 'Detail'),
-                    ),
-                    
-                    TextField(
-                      controller: addressPhoneControllers[i],
-                      decoration: InputDecoration(labelText: 'No. HP'),
-                    ),
-                  ],
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Profile'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(labelText: 'Name'),
                 ),
-              
-            ],
+                TextField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                ),
+                TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(labelText: 'Phone'),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                for (int i = 0; i < currentUser.alamat.length; i++)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Alamat ${i + 1}'),
+                      TextField(
+                        controller: addressNameControllers[i],
+                        decoration: InputDecoration(labelText: 'Nama'),
+                      ),
+                      TextField(
+                        controller: addressDetailControllers[i],
+                        decoration: InputDecoration(labelText: 'Detail'),
+                      ),
+                      TextField(
+                        controller: addressPhoneControllers[i],
+                        decoration: InputDecoration(labelText: 'No. HP'),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              String newPicture = pictureController.text;
-              String newName = nameController.text;
-              String newDescription = descriptionController.text;
-              String newPhone = phoneController.text;
-             
-              List<Alamat> newAddress = [];
-              for (int i = 0; i < currentUser.alamat.length; i++) {
-                newAddress.add(Alamat(
-                  
-                  addressNameControllers[i].text,
-                  addressDetailControllers[i].text,
-                  double.parse(addressOngkirControllers[i].text),
-                  addressPhoneControllers[i].text,
-                ));
-              }
-              
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                String newPicture = pictureController.text;
+                String newName = nameController.text;
+                String newDescription = descriptionController.text;
+                String newPhone = phoneController.text;
 
-              Account updatedAccount = Account(
-                foto: newPicture,
-                namauser: newName,
-                deskripsi: newDescription,
-                nohp: newPhone,
-                uang: currentUser.uang,
-                alamat: newAddress,
-                cart: currentUser.cart,
-              );
+                List<Alamat> newAddress = [];
+                for (int i = 0; i < currentUser.alamat.length; i++) {
+                  newAddress.add(Alamat(
+                    addressNameControllers[i].text,
+                    addressDetailControllers[i].text,
+                    double.parse(addressOngkirControllers[i].text),
+                    addressPhoneControllers[i].text,
+                  ));
+                }
 
-              Navigator.of(context).pop();
-              onUpdate(updatedAccount);
-            },
-            child: Text('Save'),
-          ),
-        ],
-      );
-    },
-  );
-}
+                Account updatedAccount = Account(
+                  foto: newPicture,
+                  namauser: newName,
+                  deskripsi: newDescription,
+                  nohp: newPhone,
+                  uang: currentUser.uang,
+                  alamat: newAddress,
+                  cart: currentUser.cart,
+                );
 
+                Navigator.of(context).pop();
+                onUpdate(updatedAccount);
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

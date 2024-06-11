@@ -24,6 +24,7 @@ class _WalletPageState extends State<Wallet> {
   Widget build(BuildContext context) {
     Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
     final theme = Theme.of(context);
+     List purchaseHistory = currentUser.history.map((purchase) => purchase.totalCost).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -239,62 +240,71 @@ class _WalletPageState extends State<Wallet> {
             ),
 
         SizedBox(height: 20,),
-Container(
-  width: MediaQuery.of(context).size.width,
-  height: 300,
-  child: Column(
-    children: [
-      Expanded(
-        child: LineChart(
-          LineChartData(
-            gridData: FlGridData(
-              show: true,
-              drawVerticalLine: true,
-              getDrawingHorizontalLine: (value) {
-                return FlLine(
-                  color: Colors.grey.withOpacity(0.3),
-                  strokeWidth: 1,
-                );
-              },
-            ),
-            titlesData: FlTitlesData(
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  getTitlesWidget: (value, meta) {
-                    return Text(value.toString());
-                  },
+Padding(
+  padding: const EdgeInsets.all(10.0),
+  child: Container(
+    width: MediaQuery.of(context).size.width,
+    height: 300,
+    child: Column(
+      children: [
+        Expanded(
+          child: LineChart(
+            LineChartData(
+              gridData: FlGridData(
+                show: true,
+                drawVerticalLine: true,
+                getDrawingHorizontalLine: (value) {
+                  return FlLine(
+                    color: Colors.grey.withOpacity(0.3),
+                    strokeWidth: 1,
+                  );
+                },
+              ),
+              titlesData: FlTitlesData(
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    getTitlesWidget: (value, meta) {
+                      return Text(value.toString());
+                    },
+                  ),
+                ),
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    
+        
+                    reservedSize: 40,
+                  ),
+                ),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: false,
+                  ),
                 ),
               ),
-             
-              topTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: false, // Mengatur showTitles menjadi false untuk menghilangkan judul atas
-                ),
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(color: Colors.grey, width: 1),
               ),
-            ),
-            borderData: FlBorderData(
-              show: true,
-              border: Border.all(color: Colors.grey, width: 1),
-            ),
-            lineBarsData: [
-              LineChartBarData(
-                spots: currentUser.history
-                    .asMap()
-                    .entries
-                    .map((entry) => FlSpot(entry.key.toDouble(), entry.value))
-                    .toList(),
-                isCurved: true,
-                color: Color.fromARGB(255, 11, 209, 195),
-                barWidth: 2,
-                dotData: FlDotData(
-                  show: true,
+              lineBarsData: [
+                LineChartBarData(
+                  spots: purchaseHistory
+                      .asMap()
+                      .entries
+                      .map((entry) => FlSpot(entry.key.toDouble(), entry.value.toDouble()))
+                      .toList(),
+                  isCurved: true,
+                  color: Color.fromARGB(255, 11, 209, 195),
+                  barWidth: 2,
+                  dotData: FlDotData(
+                    show: true,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    ],
+      ],
+    ),
   ),
 )
 

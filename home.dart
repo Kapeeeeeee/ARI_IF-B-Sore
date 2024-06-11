@@ -2,19 +2,19 @@
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/autoscroll.dart';
-import 'package:tugas_kelompok_semester4/project/camera.dart';
-import 'package:tugas_kelompok_semester4/project/cart.dart';
-import 'package:tugas_kelompok_semester4/project/profile.dart';
-import 'package:tugas_kelompok_semester4/project/provider.dart';
-import 'package:tugas_kelompok_semester4/project/search.dart';
-import 'package:tugas_kelompok_semester4/project/settings.dart';
-import 'package:tugas_kelompok_semester4/project/wallet.dart';
+import 'package:kerkom/autoscroll.dart';
+import 'package:kerkom/camera.dart';
+import 'package:kerkom/cart.dart';
+import 'package:kerkom/profile.dart';
+import 'package:kerkom/provider.dart';
+import 'package:kerkom/search.dart';
+import 'package:kerkom/settings.dart';
+import 'package:kerkom/wallet.dart';
 import 'package:flutter/material.dart';
-import 'package:tugas_kelompok_semester4/project/detail.dart';
+import 'package:kerkom/detail.dart';
 import 'package:camera/camera.dart';
 
-import 'package:tugas_kelompok_semester4/project/tampilan_produk.dart';
+import 'package:kerkom/tampilan_produk.dart';
 import 'package:flutter/widgets.dart';
 
 final List<String> ls = [
@@ -177,17 +177,7 @@ class _HomeState extends State<Home> {
                     MaterialPageRoute(builder: (context) => SearchScreen()));
               },
               icon: Icon(Icons.search)),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Profile(),
-              ));
-            },
-            icon: CircleAvatar(
-              backgroundImage: NetworkImage("${currentUser.foto}"),
-              radius: 25, // Sesuaikan dengan kebutuhan Anda
-            ),
-          ),
+          
           IconButton(
               onPressed: () {
                 Navigator.of(context)
@@ -208,16 +198,19 @@ class _HomeState extends State<Home> {
                   Flexible(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(235, 255, 255, 255),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color.fromARGB(255, 199, 194, 194)
-                                .withOpacity(0.5), // Warna bayangan
-                            spreadRadius: 5, // Menyebar bayangan
-                            blurRadius: 7, // Memperluas bayangan
-                            offset: Offset(0,
-                                3), // Perpindahan bayangan secara horizontal dan vertikal
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white.withOpacity(
+                                        0.2) // Warna bayangan saat mode gelap
+                                    : Colors.grey.withOpacity(
+                                        0.5), // Warna bayangan saat mode terang
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
                           ),
                         ],
                       ),
@@ -270,12 +263,16 @@ class _HomeState extends State<Home> {
                             children: [
                               IconButton(
                                   iconSize: 25,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => Wallet()));
+                                  },
                                   icon: Icon(Icons.add_box)),
-                                   Text("Top up",
-                                  style: TextStyle(
-                                    fontSize: 10
-                                  ),)
+                              Text(
+                                "Top up",
+                                style: TextStyle(fontSize: 10),
+                              )
                             ],
                           ),
                           SizedBox(
@@ -290,7 +287,9 @@ class _HomeState extends State<Home> {
                                         await availableCameras(); // Dapatkan daftar kamera yang tersedia
                                     final firstCamera = cameras.firstWhere(
                                         (camera) =>
-                                            camera.lensDirection == CameraLensDirection.front); // Pilih kamera belakang
+                                            camera.lensDirection ==
+                                            CameraLensDirection
+                                                .front); // Pilih kamera belakang
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -299,11 +298,11 @@ class _HomeState extends State<Home> {
                                       ),
                                     );
                                   },
-                                  icon: Icon(Icons.qr_code)),
-                                  Text("qr scan",
-                                  style: TextStyle(
-                                    fontSize: 10
-                                  ),)
+                                  icon: Icon(Icons.qr_code_scanner_rounded)),
+                              Text(
+                                "qr scan",
+                                style: TextStyle(fontSize: 10),
+                              )
                             ],
                           ),
                         ],
@@ -318,185 +317,216 @@ class _HomeState extends State<Home> {
                 "Hallo ${currentUser.namauser} Apa yang kamu mau pesan hari ini"),
             SizedBox(height: 30),
             Container(
-              width: double.infinity, // Atur lebar sesuai kebutuhan Anda
-              height: 300, // Atur tinggi sesuai kebutuhan Anda
+              width: MediaQuery.of(context)
+                  .size
+                  .width, // Atur lebar sesuai kebutuhan Anda
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 89, 89, 89).withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                  ),
+              height: 200, // Atur tinggi sesuai kebutuhan Anda
               child: SlideScreen(
                 imagePaths: banner,
               ),
             ),
             SizedBox(height: 20),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Makanan",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                  child: GridView.builder(
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 10,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      "Makanan",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+    SizedBox(
+      height: 200,
+      width: MediaQuery.of(context).size.width,
+      child: GridView.builder(
+        scrollDirection: Axis.horizontal,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 10,
+        ),
+        itemCount: ls.length,
+        itemBuilder: (context, int i) {
+          return Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return Makanan(g: ls1[i], itemCount: itemCount[i]);
+                }));
+              },
+              child: Column(
+                children: [
+                  Hero(
+                    tag: ls[i], // Gunakan tag yang unik untuk setiap Hero
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 89, 89, 89).withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: AspectRatio(
+                        aspectRatio: 1.3,
+                        child: Image.network(
+                          '${ls[i]}',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    itemCount: ls.length,
-                    itemBuilder: (context, int i) {
-                      return Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                              return Makanan(
-                                  g: ls1[i], itemCount: itemCount[i]);
-                            }));
-                          },
-                          child: Hero(
-                            tag: ls[
-                                i], // Gunakan tag yang unik untuk setiap Hero
-                            child: GridTile(
-                              child: Column(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(40),
-                                    clipBehavior: Clip.antiAlias,
-                                    child: AspectRatio(
-                                      aspectRatio: 1.3,
-                                      child: Image.network(
-                                        '${ls[i]}',
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 3,
-                                          child: Text(
-                                            "${txt[i]}",
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              overflow: TextOverflow.ellipsis,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: '',
-                                              decimalDigits: 0,
-                                            ).format(int.parse(harga[i])),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            "${txt[i]}",
+                            maxLines: 1,
+                            style: TextStyle(
+                              overflow: TextOverflow.visible,
+                              fontWeight: FontWeight.bold,
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      );
-                    },
+                        Spacer(),
+                        Text(
+                          NumberFormat.currency(
+                            locale: 'id_ID',
+                            symbol: '',
+                            decimalDigits: 0,
+                          ).format(int.parse(harga[i])),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+          );
+        },
+      ),
+    ),
+  ],
+),
+
             SizedBox(height: 20),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Minuman",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                  child: GridView.builder(
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 10,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      "Minuman",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+    SizedBox(
+      height: 200,
+      width: MediaQuery.of(context).size.width,
+      child: GridView.builder(
+        scrollDirection: Axis.horizontal,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 10,
+        ),
+        itemCount: lsmn.length,
+        itemBuilder: (context, int i) {
+          return Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return Minuman(minum: lsmn[i], itemCount: itemCountmn[i]);
+                }));
+              },
+              child: Column(
+                children: [
+                  Hero(
+                    tag: mn[i], // Gunakan tag yang unik untuk setiap Hero
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 65, 65, 65).withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: AspectRatio(
+                        aspectRatio: 1.3,
+                        child: Image.network(
+                          '${mn[i]}',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    itemCount: lsmn.length,
-                    itemBuilder: (context, int i) {
-                      return Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                              return Minuman(
-                                  minum: lsmn[i], itemCount: itemCountmn[i]);
-                            }));
-                          },
-                          child: Hero(
-                            tag: mn[
-                                i], // Gunakan tag yang unik untuk setiap Hero
-                            child: GridTile(
-                              child: Column(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(40),
-                                    clipBehavior: Clip.antiAlias,
-                                    child: AspectRatio(
-                                      aspectRatio: 1.3,
-                                      child: Image.network(
-                                        '${mn[i]}',
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            "${jdl[i]}",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: '',
-                                              decimalDigits: 0,
-                                            ).format(int.parse(hargamn[i])),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                  ),
+                  Container(
+                    height: 40,
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${jdl[i]}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
+                            overflow: TextOverflow.visible,
                           ),
                         ),
-                      );
-                    },
+                        Spacer(),
+                        Text(
+                          NumberFormat.currency(
+                            locale: 'id_ID',
+                            symbol: '',
+                            decimalDigits: 0,
+                          ).format(int.parse(hargamn[i])),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+          );
+        },
+      ),
+    ),
+  ],
+),
+
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 28, 109, 156),
+        foregroundColor: Color.fromARGB(227, 255, 255, 255),
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => Keranjang()));

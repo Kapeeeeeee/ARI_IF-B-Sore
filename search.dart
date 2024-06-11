@@ -1,7 +1,8 @@
-import 'package:kerkom/project/home.dart';
-import 'package:kerkom/project/tampilan_produk.dart';
+import 'package:flutter/widgets.dart';
+import 'package:kerkom/home.dart';
+import 'package:kerkom/tampilan_produk.dart';
 import 'package:flutter/material.dart';
-import 'package:kerkom/project/detail.dart'; // Import file yang berisi definisi objek Detail
+import 'package:kerkom/detail.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -11,22 +12,19 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
   List<Detail> searchResults = [];
-  String? filterType; // Inisialisasi filterType dengan null
+  String? filterType;
   int? minPrice;
   int? maxPrice;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // Fungsi pencarian
   void _search(String query) {
-    // Bersihkan daftar hasil pencarian sebelum melakukan pencarian baru
     searchResults.clear();
     if (query.isEmpty) {
       setState(() {
         Text('Tidak ada hasil yang ditemukan');
       });
     }
-    // Loop melalui semua objek Detail dari file detail_data.dart
     for (var detail in semua) {
-      // Jika judul produk mengandung kata kunci pencarian dan memenuhi kriteria harga, tambahkan ke daftar hasil
       if (detail.judul.toLowerCase().contains(query.toLowerCase()) &&
           (filterType == null || detail.type == filterType) &&
           (minPrice == null || detail.harga >= minPrice!) &&
@@ -34,182 +32,274 @@ class _SearchScreenState extends State<SearchScreen> {
         searchResults.add(detail);
       }
     }
-
     setState(() {});
+  }
+
+  void _showFilterDrawer() {
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  void _handleFilterChanged(String? filterType, int? minPrice, int? maxPrice) {
+    setState(() {
+      this.filterType = filterType;
+      this.minPrice = minPrice;
+      this.maxPrice = maxPrice;
+      _search(_searchController.text);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Pencarian"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: _showFilterDrawer,
+          ),
+        ],
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
+      endDrawer: FilterDrawer(
+        onFilterChanged: _handleFilterChanged,
+      ),
+      body: SizedBox(
         child: Padding(
           padding: EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextField(
-                controller: _searchController,
-                onChanged: (value) {
-                  // Panggil fungsi pencarian setiap kali teks dalam TextField berubah
-                  _search(value);
-                },
-                decoration: InputDecoration(
-                  hintText: 'Masukkan kata kunci dari nama makanan yang Anda cari',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+              Container(
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    _search(value);
+                  },
+                  decoration: InputDecoration(
+                    hintText:
+                        'Masukkan kata kunci dari nama makanan yang Anda cari',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 10), // Jarak antara TextField dan ChoiceChip
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ChoiceChip(
-                    label: Text("Makanan"),
-                    selected: filterType == 'Makanan',
-                    onSelected: (isSelected) {
-                      setState(() {
-                        filterType = isSelected ? 'Makanan' : null; // Mengatur filterType berdasarkan isSelected
-                        _search(_searchController.text); // Panggil kembali fungsi pencarian dengan filter baru
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10), // Jarak antara ChoiceChip
-                  ChoiceChip(
-                    label: Text("Minuman"),
-                    selected: filterType == 'Minuman',
-                    onSelected: (isSelected) {
-                      setState(() {
-                        filterType = isSelected ? 'Minuman' : null; // Mengatur filterType berdasarkan isSelected
-                        _search(_searchController.text); // Panggil kembali fungsi pencarian dengan filter baru
-                      });
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 10), // Jarak antara ChoiceChip dan TextField untuk harga
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ChoiceChip(
-                    label: Text("Harga 1000-5000"),
-                    selected: minPrice == 1000 && maxPrice == 5000,
-                    onSelected: (isSelected) {
-                      setState(() {
-                        if (isSelected) {
-                          minPrice = 1000;
-                          maxPrice = 5000;
-                        } else {
-                          minPrice = null;
-                          maxPrice = null;
-                        }
-                        _search(_searchController.text); // Panggil kembali fungsi pencarian dengan filter baru
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10), // Jarak antara ChoiceChip
-                  ChoiceChip(
-                    label: Text("Harga 5001-10000"),
-                    selected: minPrice == 5001 && maxPrice == 10000,
-                    onSelected: (isSelected) {
-                      setState(() {
-                        if (isSelected) {
-                          minPrice = 5001;
-                          maxPrice = 10000;
-                        } else {
-                          minPrice = null;
-                          maxPrice = null;
-                        }
-                        _search(_searchController.text); // Panggil kembali fungsi pencarian dengan filter baru
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10), // Jarak antara ChoiceChip
-                  ChoiceChip(
-                    label: Text("Harga 10001-20000"),
-                    selected: minPrice == 10001 && maxPrice == 20000,
-                    onSelected: (isSelected) {
-                      setState(() {
-                        if (isSelected) {
-                          minPrice = 10001;
-                          maxPrice = 20000;
-                        } else {
-                          minPrice = null;
-                          maxPrice = null;
-                        }
-                        _search(_searchController.text); // Panggil kembali fungsi pencarian dengan filter baru
-                      });
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20), // Jarak antara ChoiceChip dan hasil pencarian
+              SizedBox(height: 20),
               Expanded(
+
                 child: searchResults.isEmpty
                     ? Center(
                         child: Text("Tidak ada hasil yang ditemukan"),
                       )
-                    : ListView.builder(
-                        itemCount: searchResults.length,
-                        itemBuilder: (context, index) {
-                          var result = searchResults[index];
-                          return ListTile(
-                            title: Image.network(
-                              result.fileName,
-                              width: 300,
-                              height: 200,
-                            ),
-                            subtitle: Column(
-                              children: [
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Flexible(
-                                      child: Text(result.namatoko),
+                    : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 60),
+                      child: ListView.builder(
+                          itemCount: searchResults.length,
+                          itemBuilder: (context, index) {
+                            var result = searchResults[index];
+                            return Container(
+                              height: 300,
+                              width: 100,
+                              child: Card(
+                                child: ListTile(
+                                  title:  Container(
+                                    width: 100,
+                                    height: 200,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        result.fileName,
+                                        fit: BoxFit.cover,
+                                    
+                                                                  
+                                      ),
                                     ),
-                                    SizedBox(width: 8),
-                                    Flexible(child: Text(result.judul)),
-                                    SizedBox(width: 8),
-                                    Flexible(
-                                      child: Text(result.rating),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Flexible(
-                                      child: Text(result.harga.toString()),
-                                    ),
-                                  ],
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(result.judul),
+                                      Text(result.namatoko),
+                                      Text(result.rating),
+                                      Text('Rp ${result.harga}'),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    if (result.type == 'Minuman') {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => Minuman(
+                                          minum: searchResults[index],
+                                          itemCount: 0,
+                                        ),
+                                      ));
+                                    } else if (result.type == 'Makanan') {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => Makanan(
+                                          g: searchResults[index],
+                                          itemCount: 0,
+                                        ),
+                                      ));
+                                    }
+                                  },
                                 ),
-                              ],
-                            ),
-                            onTap: () {
-                              if (result.type == 'Minuman') {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Minuman(
-                                    minum: searchResults[index],
-                                    itemCount: 0,
-                                  ),
-                                ));
-                              } else if (result.type == 'Makanan') {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Makanan(
-                                    g: searchResults[index],
-                                    itemCount: 0,
-                                  ),
-                                ));
-                              }
-                            },
-                          );
-                        },
-                      ),
+                              ),
+                            );
+                          },
+                        ),
+                    ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class FilterDrawer extends StatefulWidget {
+  final Function(String?, int?, int?) onFilterChanged;
+
+  FilterDrawer({required this.onFilterChanged});
+
+  @override
+  _FilterDrawerState createState() => _FilterDrawerState();
+}
+
+class _FilterDrawerState extends State<FilterDrawer> {
+  String? filterType;
+  int? minPrice;
+  int? maxPrice;
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Tipe Produk',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Wrap(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: ChoiceChip(
+                            label: Text("Makanan"),
+                            selected: filterType == 'Makanan',
+                            onSelected: (isSelected) {
+                              setState(() {
+                                filterType = isSelected ? 'Makanan' : null;
+                                widget.onFilterChanged(
+                                    filterType, minPrice, maxPrice);
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Flexible(
+                          child: ChoiceChip(
+                            label: Text("Minuman"),
+                            selected: filterType == 'Minuman',
+                            onSelected: (isSelected) {
+                              setState(() {
+                                filterType = isSelected ? 'Minuman' : null;
+                                widget.onFilterChanged(
+                                    filterType, minPrice, maxPrice);
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Divider(height: 16.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Harga',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Wrap(
+                  spacing: 10.0,
+                  runSpacing: 10.0,
+                  children: [
+                    ChoiceChip(
+                      label: Text("Harga 1000>"),
+                      selected: minPrice == 1000 && maxPrice == 5000,
+                      onSelected: (isSelected) {
+                        setState(() {
+                          if (isSelected) {
+                            minPrice = 1000;
+                            maxPrice = 5000;
+                          } else {
+                            minPrice = null;
+                            maxPrice = null;
+                          }
+                          widget.onFilterChanged(filterType, minPrice, maxPrice);
+                        });
+                      },
+                    ),
+                    ChoiceChip(
+                      label: Text("Harga 5000>"),
+                      selected: minPrice == 5001 && maxPrice == 10000,
+                      onSelected: (isSelected) {
+                        setState(() {
+                          if (isSelected) {
+                            minPrice = 5001;
+                            maxPrice = 10000;
+                          } else {
+                            minPrice = null;
+                            maxPrice = null;
+                          }
+                          widget.onFilterChanged(filterType, minPrice, maxPrice);
+                        });
+                      },
+                    ),
+                    ChoiceChip(
+                      label: Text("Harga 10000>"),
+                      selected: minPrice == 10001 && maxPrice == 20000,
+                      onSelected: (isSelected) {
+                        setState(() {
+                          if (isSelected) {
+                            minPrice = 10001;
+                            maxPrice = 20000;
+                          } else {
+                            minPrice = null;
+                            maxPrice = null;
+                          }
+                          widget.onFilterChanged(filterType, minPrice, maxPrice);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

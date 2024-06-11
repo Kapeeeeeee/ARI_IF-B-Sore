@@ -69,7 +69,7 @@ var p1 = Account(
     deskripsi: "Manusia hanyalah alat bagiku ",
     nohp: "081263656724",
     uang: 5000000,
-    history:[10000,30000,40000,100000],
+    history:[],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",

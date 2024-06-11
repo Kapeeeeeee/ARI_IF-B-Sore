@@ -65,7 +65,7 @@ class _ManageAccState extends State<ManageAcc> {
                       onTap: () {
                         // Panggil method switchAccount dari AccountProvider
                         accountProvider.switchAccount(account);
-                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false);
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Navbar()), (route) => false);
                       },
                     );
                   },

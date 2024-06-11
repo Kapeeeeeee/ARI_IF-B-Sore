@@ -96,11 +96,12 @@ class _RatingState extends State<Rating> {
                       _commentController.clear();
                       _selectedChips.clear();
                       _rating = 0;
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CommentPage(),
                         ),
+                        (route) => false,
                       );
                     },
                   ),

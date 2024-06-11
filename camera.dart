@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -12,6 +13,9 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController _controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  QRViewController? controller;
+  String? qrCodeResult;
 
   @override
   void initState() {
@@ -31,6 +35,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
 
@@ -39,11 +44,43 @@ class _CameraScreenState extends State<CameraScreen> {
     if (!_controller.value.isInitialized) {
       return const CircularProgressIndicator();
     }
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Kamera')),
-        body: CameraPreview(_controller),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Kamera')),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 5,
+            child: QRView(
+              key: qrKey,
+              onQRViewCreated: _onQRViewCreated,
+              overlay: QrScannerOverlayShape(
+                borderColor: Colors.red,
+                borderRadius: 10,
+                borderLength: 30,
+                borderWidth: 10,
+                cutOutSize: 300,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: qrCodeResult != null
+                  ? Text('Hasil Pemindaian: $qrCodeResult')
+                  : Text('Arahkan kamera ke kode QR'),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        qrCodeResult = scanData.code;
+      });
+    });
   }
 }

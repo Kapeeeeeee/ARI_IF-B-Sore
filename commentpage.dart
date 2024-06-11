@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:kerkom/navbar.dart';
 import 'package:provider/provider.dart';
 import 'provider.dart';
 
@@ -19,12 +21,7 @@ class _CommentPageState extends State<CommentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Comments'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.popUntil(context, ModalRoute.withName('/'));
-          },
-        ),
+        
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,6 +73,34 @@ class _CommentPageState extends State<CommentPage> {
               },
             ),
           ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: MediaQuery.of(context).size.width / 2,
+            height: 50,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Navbar(),
+                    ),
+                    (route) => false,
+                  );
+                },
+                child: Center(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.home),
+                      Text("Home"),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -138,8 +163,10 @@ class _CommentPageState extends State<CommentPage> {
               );
             }).toList(),
           ),
+          
         ],
       ),
     );
   }
+
 }

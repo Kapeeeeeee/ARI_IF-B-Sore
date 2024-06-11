@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kerkom/project/detail.dart';
+import 'package:kerkom/detail.dart';
 
 
 class AccountProvider extends ChangeNotifier {
@@ -164,3 +164,4 @@ class CommentData extends ChangeNotifier {
     notifyListeners();
   }
 }
+

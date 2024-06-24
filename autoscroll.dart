@@ -25,7 +25,7 @@ class _SlideScreenState extends State<SlideScreen> {
     if (!_isDisposed) { // Pastikan komponen belum dihapus sebelum melanjutkan pemanggilan rekursif
       if (_currentPage < widget.imagePaths.length - 1) {
         _pageController.nextPage(
-          duration: Duration(milliseconds: 500),
+          duration: Duration(milliseconds: 1000),
           curve: Curves.ease,
         );
       } else {
@@ -57,7 +57,7 @@ void dispose() {
         itemBuilder: (BuildContext context, int index) {
           return Image.network(
             widget.imagePaths[index],
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           );
         },
       ),

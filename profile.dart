@@ -20,7 +20,7 @@ class _ProfileState extends State<Profile> {
   File? _image;
   final picker = ImagePicker();
   Future<void> _pickImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -325,6 +325,7 @@ class _ProfileState extends State<Profile> {
                   uang: currentUser.uang,
                   alamat: newAddress,
                   cart: currentUser.cart,
+                  pass: currentUser.pass,
                 );
 
                 Navigator.of(context).pop();

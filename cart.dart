@@ -1,9 +1,9 @@
 
-import 'package:tugas_kelompok_semester4/project/detail.dart';
-import 'package:tugas_kelompok_semester4/project/pembayaran.dart';
+import 'package:kerkom/detail.dart';
+import 'package:kerkom/pembayaran.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/provider.dart';
+import 'package:kerkom/provider.dart';
 
 
 class Keranjang extends StatefulWidget {

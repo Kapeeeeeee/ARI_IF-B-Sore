@@ -1,16 +1,18 @@
 // import 'package:flutter/foundation.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/login.dart';
-import 'package:tugas_kelompok_semester4/project/accprov.dart';
+import 'package:kerkom/accprov.dart';
+import 'package:kerkom/login.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignupState extends State<Signup> {
   TextEditingController name = TextEditingController();
   TextEditingController pwd = TextEditingController();
   TextEditingController pwd1 = TextEditingController();

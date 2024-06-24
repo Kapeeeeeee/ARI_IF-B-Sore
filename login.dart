@@ -1,9 +1,11 @@
 // import 'package:flutter/foundation.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:kerkom/navbar.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/accprov.dart';
-import 'package:tugas_kelompok_semester4/project/home.dart';
-import 'package:tugas_kelompok_semester4/project/signup.dart';
+import 'package:kerkom/accprov.dart';
+import 'package:kerkom/signup.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -94,7 +96,7 @@ class _LogInState extends State<LogIn> {
     
                   if (isLoggedIn) {
                     Navigator.pushReplacement( context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => Navbar( )),
                     );
                   } else {
                     setState(() {
@@ -122,7 +124,7 @@ class _LogInState extends State<LogIn> {
                   TextButton(
                 onPressed: (){setState(() {
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => SignUp())
+                        MaterialPageRoute(builder: (context) => Signup())
                 );
                   });},
                 child: Text("Sign Up"),

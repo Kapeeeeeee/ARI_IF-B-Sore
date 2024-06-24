@@ -3,7 +3,7 @@ import 'package:kerkom/detail.dart';
 
 
 class AccountProvider extends ChangeNotifier {
-  late List<Account> _accounts;
+  var _accounts =akun;
   late Account _currentAccount;
 
   AccountProvider({List<Account>? initialAccounts}) {
@@ -11,15 +11,7 @@ class AccountProvider extends ChangeNotifier {
     if (_accounts.isNotEmpty) {
       _currentAccount = _accounts[0];
     } else {
-      _currentAccount = Account(
-        namauser: 'Default Account',
-        foto: "tugas_kelompok_semester4/assets/logo.png",
-        nohp: "-",
-        alamat: [Alamat("-", "-", 0, "-")],
-        deskripsi: "akun demo",
-        uang: 0,
-        cart: [],
-      );
+      _currentAccount = akun_demo;
     }
   }
 
@@ -94,6 +86,8 @@ class AccountProvider extends ChangeNotifier {
     _currentAccount.cart.remove(item);
     notifyListeners();
   }
+
+  void setCurrentAccount(Account akun_demo) {}
 }
 
 

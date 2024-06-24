@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, sort_child_properties_last, prefer_const_literals_to_create_immutables
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
+import 'package:kerkom/chat/lib/chats.dart';
 import 'package:provider/provider.dart';
 import 'package:kerkom/autoscroll.dart';
 import 'package:kerkom/camera.dart';
@@ -164,8 +165,20 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void showChatDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Dialog(
+        child: WhatsappDialog(),
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
+    
     Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
     return Scaffold(
       appBar: AppBar(
@@ -178,12 +191,7 @@ class _HomeState extends State<Home> {
               },
               icon: Icon(Icons.search)),
           
-          IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Settings()));
-              },
-              icon: Icon(Icons.settings))
+          
         ],
       ),
       body: SingleChildScrollView(
@@ -528,11 +536,15 @@ class _HomeState extends State<Home> {
         backgroundColor: Color.fromARGB(255, 28, 109, 156),
         foregroundColor: Color.fromARGB(227, 255, 255, 255),
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Keranjang()));
+          // Navigator.of(context)
+          //     .push(MaterialPageRoute(builder: (context) => Keranjang()));
+          showChatDialog(context); 
         },
         child: Icon(Icons.shopping_cart), // Add your desired icon here
       ),
     );
+    
   }
+  
 }
+

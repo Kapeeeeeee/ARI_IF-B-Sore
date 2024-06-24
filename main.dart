@@ -1,23 +1,26 @@
-import 'package:tugas_kelompok_semester4/project/detail.dart';
-import 'package:tugas_kelompok_semester4/project/home.dart';
-import 'package:tugas_kelompok_semester4/project/postingan.dart';
-import 'package:tugas_kelompok_semester4/project/provider.dart';
+import 'package:kerkom/accprov.dart';
+import 'package:kerkom/chat/lib/contoh_prov.dart';
+import 'package:kerkom/detail.dart';
+import 'package:kerkom/navbar.dart';
+import 'package:kerkom/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/providerbutton.dart';
-import 'package:tugas_kelompok_semester4/project/login.dart';
+import 'package:kerkom/providerbutton.dart';
 
 void main() {
   runApp(MyApp());
 }
-var accounts = [p1, p2, p3,p4];
+var accounts = akun;
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+         ChangeNotifierProvider(create: (context) => ChatProvider()),
+          ChangeNotifierProvider(create: (context) => DisappearProvider()),
+          ChangeNotifierProvider(create: (context) => DarkProvider()),
+          ChangeNotifierProvider(create: (context) => FontSizeProvider()),
         ChangeNotifierProvider(create: (context) => AccountProvider(initialAccounts: accounts)),
-        ChangeNotifierProvider(create: (context) => PostingProvider()),
         ChangeNotifierProvider(create: (context) => CommentData()),
         ChangeNotifierProvider(create: (context) => PriorityProvider()),
         ChangeNotifierProvider(create: (context) => PromoProvider()),
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
                 : ThemeMode.light,
             theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
-            home: LogIn(),
+            home: Navbar(),
           );
         },
       ),

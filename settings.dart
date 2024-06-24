@@ -1,14 +1,17 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors
 
-import 'package:tugas_kelompok_semester4/project/detail.dart';
-import 'package:tugas_kelompok_semester4/project/home.dart';
-import 'package:tugas_kelompok_semester4/project/provider.dart';
-import 'package:tugas_kelompok_semester4/project/signup.dart';
+import 'package:kerkom/detail.dart';
+import 'package:kerkom/home.dart';
+import 'package:kerkom/main.dart';
+import 'package:kerkom/provider.dart';
+import 'package:kerkom/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tugas_kelompok_semester4/project/providerbutton.dart'; // Pastikan Anda mengimpor file yang berisi PrivacyProvider dan NotificationProvider
+import 'package:kerkom/providerbutton.dart';
+import 'package:kerkom/formregis.dart';
 
 class Settings extends StatefulWidget {
+  
   const Settings({super.key});
 
   @override
@@ -16,6 +19,7 @@ class Settings extends StatefulWidget {
 }
 
 class _ContohCheckBoxState extends State<Settings> {
+  
   @override
   Widget build(BuildContext context) {
     // Menyediakan instance dari PrivacyProvider dan NotificationProvider
@@ -112,15 +116,15 @@ class _ContohCheckBoxState extends State<Settings> {
                 controlAffinity: ListTileControlAffinity.leading,
               ),
               SizedBox(height: 30),
-              SwitchListTile(
-                  title: Text("Night Mode"),
-                  value: Provider.of<ThemeModeProvider>(context).themeMode,
-                  onChanged: (val) {
-                    setState(() {
-                      Provider.of<ThemeModeProvider>(context, listen: false)
-                          .toggleTheme(val);
-                    });
-                  }),
+              // SwitchListTile(
+              //     title: Text("Night Mode"),
+              //     value: Provider.of<ThemeModeProvider>(context).themeMode,
+              //     onChanged: (val) {
+              //       setState(() {
+              //         Provider.of<ThemeModeProvider>(context, listen: false)
+              //             .toggleTheme(val);
+              //       });
+              //     }),
               SizedBox(
                 height: 30,
               ),
@@ -142,7 +146,20 @@ class _ContohCheckBoxState extends State<Settings> {
                   itemBuilder: (context, index) {
                     Account account = accounts[index];
                     return ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                        "${account.foto}",
+                        ),
+                        radius: 15,),
                       title: Text(account.namauser),
+                      trailing: IconButton(
+                        onPressed: () {
+                    setState(() {
+                      _showConfirmationDialog(context,account);
+                    });
+                  },
+                      
+                      icon: Icon(Icons.close),),
                       onTap: () {
                         // Panggil method switchAccount dari AccountProvider
                         accountProvider.switchAccount(account);
@@ -151,6 +168,17 @@ class _ContohCheckBoxState extends State<Settings> {
                     );
                   },
                 ),
+                ElevatedButton(
+                onPressed: (){setState(() {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => FormPage())
+                );
+                  });},
+                child: Row(children: [
+                  Icon(Icons.person_2,),
+                  SizedBox(width: 10,),
+                  Text("Tambahkan akun anda yang lain"),
+                ],))
               ],
             );
           },
@@ -178,6 +206,35 @@ class _ContohCheckBoxState extends State<Settings> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context,Account account) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Account'),
+          content: Text('Do you want to delete thia account?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // No
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: ()  {
+                setState(() {
+                  accounts.remove(account);
+                });
+                Navigator.of(context).pop(true); // Yes
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

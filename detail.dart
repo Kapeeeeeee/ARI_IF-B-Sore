@@ -7,19 +7,25 @@ class Account {
   final List history;
   final List<Alamat> alamat;
   final List<CartItem> cart;
-
+  String pass;
+  List<Map<String, String>> chats;
+  
+  
+  
   void updateAccount({
     String? foto,
     String? namauser,
     String? deskripsi,
     String? nohp,
     List<Alamat>? alamat,
-    List<CartItem>? cart,
+    String? pass,
+
   }) {
     if (foto != null) this.foto = foto;
     if (namauser != null) this.namauser = namauser;
     if (deskripsi != null) this.deskripsi = deskripsi;
     if (nohp != null) this.nohp = nohp;
+    if (pass != null) this.pass = pass;
   }
 
   Account({
@@ -31,8 +37,21 @@ class Account {
     this.history = const [],
     required this.alamat,
     required this.cart,
+    required this.pass,
+    this.chats = const []
 
-  });
+
+    
+
+  }
+  );
+  void addChat(Map<String, String> chat) {
+    chats.add(chat);
+  }
+
+  void removeChat() {
+    chats.clear();
+  }
 }
 
 class CartItem {
@@ -62,7 +81,8 @@ class Alamat {
   Alamat(this.nama, this.detail, this.ongkir, this.nohp);
 }
 
-var p1 = Account(
+List<Account>  akun =[
+ Account(
     foto:
         "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTaV3v6GRUz97FAP1lg5CYiKqCCyYVFMrTjbcdcjwEGSAdt1WNa",
     namauser: "Alex Ander Wijaya",
@@ -77,16 +97,23 @@ var p1 = Account(
           10000,
           "081263656724"),
     ],
-    cart: []);
+    cart: [],
+    pass: "aku",
+    chats: [
+      {"Frederick Liko":"Hello"},
+      {"Alex Ander Wijaya":"Hello"},
+      {"Frederick Liko":"Apa Kabar nak muda?"},
+    ]),
+   
 
-var p2 = Account(
+ Account(
     foto:
         "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ4TKkTFl8wtncoWv5SGoipcqvJB0vpyYTPs4UMAX5DVvWKg0n0",
     namauser: "Frederick Liko",
     deskripsi: "Ez kali tugas tugas ini ",
     nohp: "081263656724",
     uang: 5000000,
-    history:[10000,30000,40000,100000],
+    history:[],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
@@ -94,16 +121,19 @@ var p2 = Account(
           10000,
           "081263656724"),
     ],
-    cart: []);
+    cart: [],
+    pass: "aku",
+    chats: []),
+   
 
-var p3 = Account(
+ Account(
     foto:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYlM-O9Yk5DFXfUxUKv13c07Da35dt8m6nMSqgoRLROJlfWQAkNxiBdlGxIgYw768m&usqp=CAU",
     namauser: "Kenzie Pragata",
     deskripsi: "Gausah Sok Keras Dek",
     nohp: "081263656724",
     uang: 890000,
-    history:[10000,30000,40000,100000],
+    history:[],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
@@ -111,16 +141,19 @@ var p3 = Account(
           10000,
           "081263656724"),
     ],
-    cart: []);
+    cart: [],
+    pass: "aku",
+    chats: []),
+   
 
-var p4 = Account(
+ Account(
     foto:
         "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRApZOIgvNOHjyiUUZoFRzaxggYeyT_Fw8bIU44zJRAqgug7dcK",
     namauser: "Richardo Wijaya",
     deskripsi: "Genshin Bukan game 18+ ",
     nohp: "081263656724",
     uang: 100000,
-    history:[10000,30000,40000,100000],
+    history:[],
     alamat: [
       Alamat(
           "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
@@ -128,7 +161,31 @@ var p4 = Account(
           10000,
           "081263656724"),
     ],
-    cart: []);
+    cart: [],
+    pass: "aku",
+    chats: [])]
+    ;
+
+var akun_demo = Account(
+        foto: "tugas_kelompok_semester4/assets/logo.png",
+        namauser: 'Default Account',
+        deskripsi: "akun demo",
+        nohp: "-",
+        uang: 0,
+        history: [],
+        alamat: [],
+        cart: [],
+        pass: '',
+        chats:[]
+      );
+
+
+
+
+
+
+
+
 
 class Detail {
   String judul;
@@ -403,3 +460,4 @@ var mn10 = Detail(
     rating: "5.0",
     type: "Minuman",
     itemCount: 1);
+

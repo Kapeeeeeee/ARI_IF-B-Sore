@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kerkom/detail.dart';
+import 'package:kerkom/provider.dart';
+import 'package:provider/provider.dart';
 
 class Metode extends StatefulWidget {
   const Metode({super.key});
@@ -14,6 +16,7 @@ class _MetodeState extends State<Metode> {
   bool isClicked = false;
   @override
   Widget build(BuildContext context) {
+  Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
     return Scaffold(
       appBar: AppBar(
         title: Text("Metode Pembayaran"),
@@ -65,7 +68,7 @@ class _MetodeState extends State<Metode> {
                               Icon(Icons.new_releases_outlined, size: 15,color: Colors.red,),
                             ],
                           ),
-                          Text("Balance : ${p1.uang}")
+                          Text("Balance : ${currentUser.uang}")
                         ],
                       ),
 
@@ -99,7 +102,7 @@ class _MetodeState extends State<Metode> {
                               ),),
                             ],
                           ),
-                          Text("Balance : ${p1.uang}")
+                          Text("Balance : ${currentUser.uang}")
                         ],
                       ),
 

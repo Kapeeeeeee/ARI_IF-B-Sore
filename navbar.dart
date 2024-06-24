@@ -2,11 +2,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:kerkom/history.dart';
 import 'package:kerkom/home.dart';
-import 'package:kerkom/login.dart';
 import 'package:kerkom/profile.dart';
 import 'package:kerkom/detail.dart';
 import 'package:kerkom/provider.dart';
-import 'package:kerkom/settings.dart';
 import 'package:kerkom/wallet.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +20,9 @@ class _NavbarState extends State<Navbar> {
     Wallet(),
     PurchaseHistoryPage(),
     Profile(),
-  ];
 
+  ];
+  
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

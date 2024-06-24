@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:kerkom/alamat.dart';
+import 'package:kerkom/chat/lib/contoh_prov.dart';
 import 'package:kerkom/detail.dart';
 import 'package:kerkom/diskon.dart';
 import 'package:kerkom/metode_pembayaran.dart';
@@ -63,6 +64,20 @@ class _BayarState extends State<Pembayaran> {
       jumlahItemPerToko[item.namatoko] =
           (jumlahItemPerToko[item.namatoko] ?? 0) + item.itemCount;
     }
+
+
+    void confirmPurchase(Account currentUser) {
+  // Logika untuk menangani konfirmasi pembelian
+
+  for (var item in widget.selectedItems) {
+    // Mengirim pesan otomatis dari toko ke pengguna
+    Provider.of<ChatProvider>(context, listen: false).sendAutomaticMessage(
+      item.namatoko,
+      currentUser.namauser,
+      'Terima kasih telah membeli ${item.itemName} dari ${item.namatoko}!',
+    );
+  }
+}
 
     double totalOngkir() {
       double ongkir = alamat?.ongkir ?? 0;
@@ -264,14 +279,7 @@ class _BayarState extends State<Pembayaran> {
                           height: 15,
                         ),
 
-                        // Expanded(
-                        //   flex: 3,
-                        //   child: Text(
-                        //     widget.selectedItems[i].itemName,
-                        //     overflow: TextOverflow.ellipsis, // Memotong teks yang terlalu panjang
-                        //     maxLines: 1, // Memastikan hanya satu baris yang ditampilkan
-                        //   ),
-                        // ),
+                        
                         Row(
                           children: [
                             Expanded(
@@ -553,6 +561,8 @@ class _BayarState extends State<Pembayaran> {
                   currentUser.uang = duit;
                   for (int i = 0; i < widget.selectedItems.length; i++){
                   currentUser.cart.remove(widget.selectedItems[i]);}
+                  confirmPurchase(currentUser);
+
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) => Invoice(
                     selectedItems: widget.selectedItems,
@@ -569,4 +579,5 @@ class _BayarState extends State<Pembayaran> {
       ],
     );
   }
+  
 }

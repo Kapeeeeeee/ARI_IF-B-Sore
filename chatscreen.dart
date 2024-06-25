@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kerkom/detail.dart';
-import 'package:kerkom/provider.dart';
+import 'package:kerkom/project/detail.dart';
+import 'package:kerkom/project/provider.dart';
 import 'package:provider/provider.dart';
 import 'contoh_prov.dart';
 import 'disappearMSG.dart';
@@ -88,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.all(30),
+        padding: EdgeInsets.all(8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -149,7 +149,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     213,
                                                     213), // Warna untuk pesan penerima di mode terang
                                       ),
-                                      constraints: BoxConstraints(maxWidth: 400),
+                                      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/2),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +187,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 230,
+                    width: MediaQuery.of(context).size.width/2.1,
                     child: TextField(
                       controller: chatController,
                       focusNode: _focusNode,
@@ -224,7 +224,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           fontSize: fontSize),
                     ),
                   ),
-                  SizedBox(width: 20),
+                  // SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
                       if (chatController.text.isNotEmpty) {
@@ -245,7 +245,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Icon(Icons.send),
                     style: ElevatedButton.styleFrom(
                       shape: CircleBorder(),
-                      padding: EdgeInsets.all(20),
+                      // padding: EdgeInsets.all(8),
                     ),
                   ),
                 ],

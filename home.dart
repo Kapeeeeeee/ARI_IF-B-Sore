@@ -1,21 +1,21 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, sort_child_properties_last, prefer_const_literals_to_create_immutables
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:kerkom/chat/lib/chats.dart';
+import 'package:kerkom/project/chats.dart';
 import 'package:provider/provider.dart';
-import 'package:kerkom/autoscroll.dart';
-import 'package:kerkom/camera.dart';
-import 'package:kerkom/cart.dart';
-import 'package:kerkom/profile.dart';
-import 'package:kerkom/provider.dart';
-import 'package:kerkom/search.dart';
-import 'package:kerkom/settings.dart';
-import 'package:kerkom/wallet.dart';
+import 'package:kerkom/project/autoscroll.dart';
+import 'package:kerkom/project/camera.dart';
+import 'package:kerkom/project/cart.dart';
+import 'package:kerkom/project/profile.dart';
+import 'package:kerkom/project/provider.dart';
+import 'package:kerkom/project/search.dart';
+import 'package:kerkom/project/settings.dart';
+import 'package:kerkom/project/wallet.dart';
 import 'package:flutter/material.dart';
-import 'package:kerkom/detail.dart';
+import 'package:kerkom/project/detail.dart';
 import 'package:camera/camera.dart';
 
-import 'package:kerkom/tampilan_produk.dart';
+import 'package:kerkom/project/tampilan_produk.dart';
 import 'package:flutter/widgets.dart';
 
 final List<String> ls = [
@@ -190,6 +190,13 @@ class _HomeState extends State<Home> {
                     MaterialPageRoute(builder: (context) => SearchScreen()));
               },
               icon: Icon(Icons.search)),
+          IconButton(
+              onPressed: () {
+                showChatDialog(context);
+                // Navigator.of(context).push(
+                //     MaterialPageRoute(builder: (context) => SearchScreen()));
+              },
+              icon: Icon(Icons.chat_bubble)),
           
           
         ],
@@ -323,7 +330,7 @@ class _HomeState extends State<Home> {
             SizedBox(height: 30),
             Text(
                 "Hallo ${currentUser.namauser} Apa yang kamu mau pesan hari ini"),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             Container(
               width: MediaQuery.of(context)
                   .size
@@ -333,8 +340,8 @@ class _HomeState extends State<Home> {
                           BoxShadow(
                             color: const Color.fromARGB(255, 89, 89, 89).withOpacity(0.5),
                             spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: Offset(0, 10),
+                            blurRadius: 2,
+                            offset: Offset(0, 1),
                           ),
                         ],
                   ),
@@ -382,8 +389,8 @@ class _HomeState extends State<Home> {
                           BoxShadow(
                             color: const Color.fromARGB(255, 89, 89, 89).withOpacity(0.5),
                             spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: Offset(0, 10),
+                            blurRadius: 3,
+                            offset: Offset(0, 1),
                           ),
                         ],
                       ),
@@ -437,7 +444,7 @@ class _HomeState extends State<Home> {
   ],
 ),
 
-            SizedBox(height: 20),
+            // SizedBox(height: 20),
             Column(
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
@@ -476,8 +483,8 @@ class _HomeState extends State<Home> {
                           BoxShadow(
                             color: const Color.fromARGB(255, 65, 65, 65).withOpacity(0.5),
                             spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: Offset(0, 10),
+                            blurRadius: 3,
+                            offset: Offset(0, 1),
                           ),
                         ],
                       ),

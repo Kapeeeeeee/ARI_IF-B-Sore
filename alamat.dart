@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kerkom/provider.dart';
+import 'package:kerkom/project/provider.dart';
 import 'package:provider/provider.dart';
 
 class AlamatPage extends StatefulWidget {
@@ -31,7 +31,9 @@ class _AlamatPageState extends State<AlamatPage> {
                 selectedIndex = index;
               });
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Alamat terpilih: ${alamat.nama}")),
+                SnackBar(content: Text("Alamat terpilih: ${alamat.nama}",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,)),
               );
             },
             child: Container(

@@ -1,118 +1,78 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:kerkom/detail.dart';
-import 'package:kerkom/provider.dart';
+import 'package:kerkom/project/detail.dart';
+import 'package:kerkom/project/provider.dart';
 import 'package:provider/provider.dart';
 
-class Metode extends StatefulWidget {
-  const Metode({super.key});
 
+class Metode extends StatefulWidget {
   @override
-  State<Metode> createState() => _MetodeState();
+  _MetodeState createState() => _MetodeState();
 }
 
 class _MetodeState extends State<Metode> {
-  bool isClicked = false;
+  int selectedMethodIndex = -1;
+
   @override
   Widget build(BuildContext context) {
-  Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
+    Account currentUser = Provider.of<AccountProvider>(context).currentAccount;
     return Scaffold(
       appBar: AppBar(
         title: Text("Metode Pembayaran"),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              child: Text("Jenis Pembayaran"),
-              decoration: BoxDecoration(
-                color: Colors.white12,
-                border : Border(
-                  top: BorderSide(width: 1.0, color: Colors.black38), // Atas
-                  bottom: BorderSide(width: 1.0, color: Colors.black38),
+      body: ListView.builder(
+        itemCount: paymentMethods.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedMethodIndex = index;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width/1.2,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white12,
+                  border: Border.all(
+                      color: selectedMethodIndex == index ? Colors.orangeAccent : Colors.black,
+                      width: 1,
+                    ),
                 ),
-              )
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        isClicked = !isClicked;
-                      });
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          border : Border(
-                            top: BorderSide(color: isClicked ? Colors.black : Colors.orangeAccent,
-                            width: 1),
-                            bottom: BorderSide(color: isClicked ? Colors.black : Colors.orangeAccent,
-                                width: 1)
-                          ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Row(
+                          children: [
+                            Icon(paymentMethods[index].icon),
+                            SizedBox(width: 10),
+                            Text(
+                              paymentMethods[index].name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.account_balance_wallet_rounded),
-                              Text("ARI Wallet", style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold
-                              ),),
-                              Icon(Icons.new_releases_outlined, size: 15,color: Colors.red,),
-                            ],
-                          ),
-                          Text("Balance : ${currentUser.uang}")
-                        ],
                       ),
-
                     ),
-                  ),
-                  SizedBox(height: 15,),
-                  GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        isClicked = !isClicked;
-                      });
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          border : Border(
-                            top: BorderSide(color: isClicked ? Colors.black : Colors.orangeAccent,
-                            width: 1),
-                            bottom: BorderSide(color: isClicked ? Colors.black : Colors.orangeAccent,
-                                width: 1)
-                          ),
-                        ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.money),
-                              Text("Cash", style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold,
-                              ),),
-                            ],
-                          ),
-                          Text("Balance : ${currentUser.uang}")
-                        ],
+                    if (index != 1) // Menampilkan Balance hanya jika item tidak dipilih
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: Text("Balance: ${currentUser.uang}"),
                       ),
-
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -139,8 +139,8 @@ List<Account>  akun =[
     history:[],
     alamat: [
       Alamat(
-          "Jln Exp Lane no.98 Dekat Tower 3 \nKecamatan Land Of Dawn \nProvinsi Mobile Legend",
-          "Rumah Alex",
+          "Jln Immo Abadi No. 1 \nKecamatan Top Global \nProvinsi Orang Ganteng",
+          "Office",
           10000,
           "081263656724"),
     ],
@@ -221,6 +221,7 @@ class PaymentMethod {
 List<PaymentMethod> paymentMethods = [
   PaymentMethod(icon: Icons.account_balance_wallet_rounded, name: "ARI Wallet"),
   PaymentMethod(icon: Icons.money, name: "COD (Cash or Duel)"),
+  PaymentMethod(icon: Icons.qr_code, name: "QRIS"),
   // Tambahkan metode pembayaran lain di sini
 ];
 
@@ -369,7 +370,7 @@ var m10 = Detail(
     itemCount: 1);
 
 var mn1 = Detail(
-    judul: "Jus Strawberry",
+    judul: "Jus Stroberi",
     desc:
         "Strawberry impor yang disajikan dengan penuh niat dan ditangani oleh para ahlinya",
     fileName: gambarMinuman[0],

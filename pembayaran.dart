@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:kerkom/alamat.dart';
-import 'package:kerkom/chat/lib/contoh_prov.dart';
-import 'package:kerkom/detail.dart';
-import 'package:kerkom/diskon.dart';
-import 'package:kerkom/metode_pembayaran.dart';
-import 'package:kerkom/payment_cont.dart';
-import 'package:kerkom/provider.dart';
+import 'package:kerkom/project/alamat.dart';
+import 'package:kerkom/project/contoh_prov.dart';
+import 'package:kerkom/project/detail.dart';
+import 'package:kerkom/project/diskon.dart';
+import 'package:kerkom/project/metode_pembayaran.dart';
+import 'package:kerkom/project/payment_cont.dart';
+import 'package:kerkom/project/provider.dart';
 import 'package:provider/provider.dart';
-import 'package:kerkom/rating.dart';
+import 'package:kerkom/project/rating.dart';
 
 class Pembayaran extends StatefulWidget {
   final List<CartItem> selectedItems;
@@ -377,6 +377,9 @@ class _BayarState extends State<Pembayaran> {
                         "Gunakan/ masukkan kode",
                         style: TextStyle(fontWeight: FontWeight.w300),
                       ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 17,
+                      ),
                       Icon(Icons.keyboard_arrow_right_rounded)
                     ],
                   ),
@@ -409,9 +412,9 @@ class _BayarState extends State<Pembayaran> {
                       ),
                       Text("Metode Pembayaran : "),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: 10,
                       ),
-                      Text("Master Card"),
+                      Text("Pilih Metode Pembayaran"),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 16,
                       ),

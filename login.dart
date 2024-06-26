@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kerkom/navbar.dart';
+import 'package:kerkom/splashscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:kerkom/signup.dart';
 // import 'package:kerkom/detail.dart';
@@ -100,7 +101,7 @@ class _LogInState extends State<LogIn> {
     
                   if (isLoggedIn) {
                     Navigator.pushReplacement( context,
-                      MaterialPageRoute(builder: (context) => Navbar( )),
+                      MaterialPageRoute(builder: (context) => SplashScreen( )),
                     );
                   } else {
                     setState(() {

@@ -31,8 +31,10 @@ class AccountProvider extends ChangeNotifier {
     _selectedIndex = index;
     notifyListeners();}
 
-
-  
+  void addAcc(Account p){
+    akun.add(p);
+    notifyListeners();
+  }
 
   void switchAccount(Account newAccount) {
     _currentAccount = newAccount;

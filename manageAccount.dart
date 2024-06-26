@@ -9,6 +9,7 @@ import 'package:kerkom/detail.dart';
 import 'package:kerkom/home.dart';
 import 'package:kerkom/provider.dart';
 import 'package:kerkom/signup.dart';
+import 'package:kerkom/login.dart';
 
 class ManageAcc extends StatefulWidget {
   const ManageAcc({super.key});
@@ -116,7 +117,7 @@ class _ManageAccState extends State<ManageAcc> {
                           onPressed: () {
                             setState(() {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => FormPage()));
+                                  builder: (context) => SignUp()));
                             });
                           },
                           child: Row(

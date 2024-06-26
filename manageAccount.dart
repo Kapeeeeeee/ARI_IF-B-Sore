@@ -141,7 +141,7 @@ class _ManageAccState extends State<ManageAcc> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => Signup()),
+                        MaterialPageRoute(builder: (context) => LogIn()),
                         (route) => false);
                   },
                   child: Row(

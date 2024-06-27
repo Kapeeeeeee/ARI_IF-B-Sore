@@ -92,6 +92,14 @@ class _RatingState extends State<Rating> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.send),
                     onPressed: () {
+                      if (_rating == 0) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please provide a rating'),
+                          ),
+                        );
+                        return;
+                      }
                       _addComment(commentData);
                       _commentController.clear();
                       _selectedChips.clear();
@@ -177,5 +185,4 @@ class _RatingState extends State<Rating> {
     // Add the comment to the comment data
     commentData.addComment(newComment);
   }
-
 }

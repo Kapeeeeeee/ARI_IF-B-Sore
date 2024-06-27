@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:kerkom/navbar.dart';
 import 'package:provider/provider.dart';
 import 'provider.dart';
+import 'navbar.dart';
 
 class CommentPage extends StatefulWidget {
   @override
@@ -21,17 +20,19 @@ class _CommentPageState extends State<CommentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Comments'),
-        
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          SizedBox(
+            height: 5,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Wrap(
+                spacing: 8.0, // Horizontal gap between chips
                 children: [
                   FilterChip(
                     label: Text('All'),
@@ -77,7 +78,7 @@ class _CommentPageState extends State<CommentPage> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: MediaQuery.of(context).size.width / 2,
-            height: 50,
+              height: 50,
               child: TextButton(
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
@@ -163,10 +164,8 @@ class _CommentPageState extends State<CommentPage> {
               );
             }).toList(),
           ),
-          
         ],
       ),
     );
   }
-
 }

@@ -109,7 +109,7 @@ class _WalletPageState extends State<Wallet> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        image: AssetImage('wallet.jpg'),
+                        image: NetworkImage("https://img.freepik.com/free-vector/blank-blue-halftone-background_53876-99003.jpg?w=740&t=st=1719528213~exp=1719528813~hmac=2064d2c10fc7f95df4d33739bb0d83dacdc5a72ca48d41c42efbdd2903272ca2"),
                         fit: BoxFit.cover,
                       ),
                       boxShadow: [

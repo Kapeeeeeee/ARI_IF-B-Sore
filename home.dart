@@ -1,21 +1,19 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, sort_child_properties_last, prefer_const_literals_to_create_immutables
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:kerkom/project/chats.dart';
+import 'package:kerkom/chats.dart';
 import 'package:provider/provider.dart';
-import 'package:kerkom/project/autoscroll.dart';
-import 'package:kerkom/project/camera.dart';
-import 'package:kerkom/project/cart.dart';
-import 'package:kerkom/project/profile.dart';
-import 'package:kerkom/project/provider.dart';
-import 'package:kerkom/project/search.dart';
-import 'package:kerkom/project/settings.dart';
-import 'package:kerkom/project/wallet.dart';
+import 'package:kerkom/autoscroll.dart';
+import 'package:kerkom/camera.dart';
+
+import 'package:kerkom/provider.dart';
+import 'package:kerkom/search.dart';
+import 'package:kerkom/wallet.dart';
 import 'package:flutter/material.dart';
-import 'package:kerkom/project/detail.dart';
+import 'package:kerkom/detail.dart';
 import 'package:camera/camera.dart';
 
-import 'package:kerkom/project/tampilan_produk.dart';
+import 'package:kerkom/tampilan_produk.dart';
 import 'package:flutter/widgets.dart';
 
 final List<String> ls = [

@@ -5,6 +5,10 @@ import 'provider.dart';
 import 'navbar.dart';
 
 class CommentPage extends StatefulWidget {
+  final String itemName;
+
+  CommentPage({required this.itemName});
+
   @override
   _CommentPageState createState() => _CommentPageState();
 }
@@ -15,11 +19,13 @@ class _CommentPageState extends State<CommentPage> {
   @override
   Widget build(BuildContext context) {
     final commentData = Provider.of<CommentData>(context);
-    final commentsList = commentData.commentsList;
+    final commentsList = commentData.commentsList
+        .where((comment) => comment['itemName'] == widget.itemName)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comments'),
+        title: Text('Comments for ${widget.itemName}'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -138,6 +144,11 @@ class _CommentPageState extends State<CommentPage> {
                       ),
                       itemCount: 5,
                       itemSize: 20,
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      comment['dateTime'].toString(),
+                      style: TextStyle(fontSize: 10),
                     ),
                   ],
                 ),

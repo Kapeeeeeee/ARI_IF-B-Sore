@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:kerkom/detail.dart';
 import 'package:kerkom/history.dart';
+import 'package:kerkom/navbar.dart';
 import 'package:kerkom/provider.dart';
 import 'package:kerkom/rating.dart';
 import 'package:provider/provider.dart';
@@ -200,29 +201,30 @@ class _InvoiceState extends State<Invoice> {
             ),
             Align(
              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width / 2,
-                height: 50,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color(0xFF419197),
-                  ),
-                  onPressed: () {
-                    _addPurchaseToHistory(currentUser, formattedDate, totalCost, widget.selectedItems);
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Rating(
-                          selectedItems: widget.selectedItems,
-                        ),
-                      ),(route) => false
-                    );
-                  },
-                  child: Text(
-                    "Beri Penilaian",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 100),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: 50,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color(0xFF419197),
+                    ),
+                    onPressed: () {
+                      _addPurchaseToHistory(currentUser, formattedDate, totalCost, widget.selectedItems);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Navbar(),
+                        ),(route) => false
+                      );
+                    },
+                    child: Text(
+                      "Beri Penilaian",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

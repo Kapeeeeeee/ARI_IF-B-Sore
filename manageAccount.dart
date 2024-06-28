@@ -117,7 +117,7 @@ class _ManageAccState extends State<ManageAcc> {
                           onPressed: () {
                             setState(() {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SignUp()));
+                                  builder: (context) => Signup()));
                             });
                           },
                           child: Row(

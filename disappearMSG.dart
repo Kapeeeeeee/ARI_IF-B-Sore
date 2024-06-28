@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kerkom/chat/lib/contoh_prov.dart';
+import 'package:kerkom/contoh_prov.dart';
 import 'package:provider/provider.dart';
 
 class disappearMSG extends StatelessWidget {

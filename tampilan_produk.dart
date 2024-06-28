@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'cart.dart';
-import 'commentpage.dart';
-import 'detail.dart';
+import 'package:intl/intl.dart';
+import 'package:kerkom/cart.dart';
+import 'package:kerkom/commentpage.dart';
+import 'package:kerkom/detail.dart';
 import 'package:provider/provider.dart';
-import 'provider.dart';
+import 'package:kerkom/provider.dart';
 
 class Makanan extends StatelessWidget {
   final Detail g;
@@ -55,7 +56,7 @@ class Makanan extends StatelessWidget {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CommentPage(),
+                            builder: (context) => CommentPage(itemName: g.judul,),
                           ),
                           (route) => false,
                         );
@@ -74,12 +75,15 @@ class Makanan extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      "Rp.${g.harga}",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        NumberFormat.currency(
+                          locale: 'id_ID',
+                          symbol: '',
+                          decimalDigits: 0,
+                        ).format(int.parse(g.harga.toString())),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
                   ],
                 ),
               ],
@@ -199,7 +203,7 @@ class Minuman extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => CommentPage()),
+                              builder: (context) => CommentPage(itemName:minum.judul ,)),
                         );
                       },
                       icon: Icon(
@@ -216,12 +220,15 @@ class Minuman extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      "Rp.${minum.harga}",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        NumberFormat.currency(
+                          locale: 'id_ID',
+                          symbol: '',
+                          decimalDigits: 0,
+                        ).format(int.parse(minum.harga.toString())),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
                   ],
                 ),
               ],

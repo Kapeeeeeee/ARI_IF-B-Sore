@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kerkom/project/detail.dart';
-import 'package:kerkom/project/provider.dart';
+import 'package:kerkom/detail.dart';
+import 'package:kerkom/provider.dart';
 import 'package:provider/provider.dart';
 import 'contoh_prov.dart';
 import 'disappearMSG.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kerkom/chat/lib/chatscreen.dart';
-import 'package:kerkom/chat/lib/contoh_prov.dart';
+import 'package:kerkom/chatscreen.dart';
+import 'package:kerkom/contoh_prov.dart';
 import 'package:kerkom/detail.dart';
 import 'package:kerkom/provider.dart';
 import 'package:provider/provider.dart';

@@ -21,16 +21,16 @@ class ChatProvider extends ChangeNotifier {
         {"Kenzie Pragata": "Hello"},
         {"Alex Ander Wijaya": "Hello"},
         {"Kenzie Pragata": "Wyd?"},
+
       ],
       "Frederick Liko": [
         {"Frederick Liko": "Hello"},
         {"Alex Ander Wijaya": "Hello"},
         {"Frederick Liko": "Wyd?"},
+      
+      
       ],
-      "Tono": [
-        {"Tono": "Hello"},
-        {"Alex Ander Wijaya": "Hello"},
-        {"Tono": "Wyd?"},
+      "Toko Clara": [
       ],
     },
     "Kenzie Pragata": {
@@ -46,6 +46,9 @@ class ChatProvider extends ChangeNotifier {
       ],
     },
     "Toko Clara":{
+      "Kenzie Pragata":[
+
+      ]
 
     }
   };
@@ -62,9 +65,26 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendAutomaticMessage(String sender, String receiver, String message) {
+ void sendAutomaticMessage(String sender, String receiver, String message) {
+    if (!listPercakapan.containsKey(sender)) {
+        listPercakapan[sender] = {};
+    }
+    if (!listPercakapan.containsKey(receiver)) {
+        listPercakapan[receiver] = {};
+    }
+
+    if (!listPercakapan[sender]!.containsKey(receiver)) {
+        listPercakapan[sender]![receiver] = [];
+    }
+    if (!listPercakapan[receiver]!.containsKey(sender)) {
+        listPercakapan[receiver]![sender] = [];
+    }
+
     addChat(sender, receiver, {sender: message});
-  }
+}
+
+
+
 
 }
 

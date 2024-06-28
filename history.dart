@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kerkom/detail.dart';
 import 'package:kerkom/provider.dart';
+import 'package:kerkom/rating.dart';
 import 'package:provider/provider.dart';
 
 class PurchaseHistory {
@@ -33,6 +34,7 @@ class PurchaseHistoryPage extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 showBottomSheet(
+
                   context: context,
                   builder: (context) => SelectedItemsBottomSheet(
                     selectedItems: purchase.selectedItems,
@@ -89,8 +91,8 @@ class SelectedItemsBottomSheet extends StatelessWidget {
     ),
     child: Container(
       color:  Theme.of(context).cardColor,
-      height: MediaQuery.of(context).size.height * 0.93,
-      padding: EdgeInsets.all(16),
+      height: MediaQuery.of(context).size.height * 0.50,
+      padding: EdgeInsets.all(30),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -114,6 +116,7 @@ class SelectedItemsBottomSheet extends StatelessWidget {
                 final item = selectedItems?[index];
                 return item != null
                     ? ListTile(
+
                         title: Text(item.itemName),
                         subtitle: Text('Harga: ${item.harga}, Jumlah: ${item.itemCount}'),
                         leading: Container(
@@ -127,7 +130,19 @@ class SelectedItemsBottomSheet extends StatelessWidget {
                             ),
                           ),
                         ),
-                      )
+                         trailing: IconButton(
+                            icon: Icon(Icons.rate_review),
+                            onPressed: () {
+                              // Navigasi ke halaman Rating dengan itemName
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Rating(itemName: item.itemName,selectedItems: [item],),
+                                ),
+                              );
+                            },
+                          ),
+                        )
                     : SizedBox.shrink();
               },
             ),

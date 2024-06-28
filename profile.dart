@@ -320,6 +320,7 @@ class _ProfileState extends State<Profile> {
                 Account updatedAccount = Account(
                   foto: newPicture,
                   namauser: newName,
+                  password: currentUser.pass,
                   deskripsi: newDescription,
                   nohp: newPhone,
                   uang: currentUser.uang,

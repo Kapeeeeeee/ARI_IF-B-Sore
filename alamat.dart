@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kerkom/project/provider.dart';
+import 'package:kerkom/provider.dart';
 import 'package:provider/provider.dart';
 
 class AlamatPage extends StatefulWidget {

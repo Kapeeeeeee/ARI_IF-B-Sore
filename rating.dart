@@ -7,8 +7,9 @@ import 'provider.dart';
 
 class Rating extends StatefulWidget {
   final List<CartItem>? selectedItems;
+  final String itemName;
 
-  Rating({this.selectedItems});
+  Rating({this.selectedItems, required this.itemName});
 
   @override
   State<Rating> createState() => _RatingState();
@@ -24,17 +25,20 @@ class _RatingState extends State<Rating> {
   var toko = '';
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.selectedItems != null) {
+      final filteredItem = widget.selectedItems!
+          .firstWhere((item) => item.itemName == widget.itemName);
+      gambar = filteredItem.gambar;
+      nama = filteredItem.itemName;
+      toko = filteredItem.namatoko;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final commentData = Provider.of<CommentData>(context);
-    final List<CartItem>? selectedItems = widget.selectedItems;
-
-    if (selectedItems != null) {
-      for (var item in selectedItems) {
-        gambar = item.gambar;
-        nama = item.itemName;
-        toko = item.namatoko;
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -107,7 +111,7 @@ class _RatingState extends State<Rating> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CommentPage(),
+                          builder: (context) => CommentPage(itemName: widget.itemName),
                         ),
                         (route) => false,
                       );
@@ -174,15 +178,16 @@ class _RatingState extends State<Rating> {
     Account currentUser =
         Provider.of<AccountProvider>(context, listen: false).currentAccount;
     String commentText = _commentController.text;
-    // Include the rating and selected chips even if the comment text is empty
+    DateTime now = DateTime.now();
     Map<String, dynamic> newComment = {
       'avatar': currentUser.foto,
       'name': currentUser.namauser,
       'rating': _rating,
       'chips': List.from(_selectedChips),
       'comment': commentText,
+      'itemName': widget.itemName, 
+      'dateTime': now
     };
-    // Add the comment to the comment data
     commentData.addComment(newComment);
   }
 }

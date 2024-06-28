@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:kerkom/navbar.dart';
 import 'package:kerkom/splashscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:kerkom/signup.dart';
